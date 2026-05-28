@@ -1089,17 +1089,64 @@
 </div>
 
 <div id="monthly-options" class="form-group col dynamic-option" style="display: none;">
-    <label for="monthly-date">Select Date of the Month:</label>
-    <input type="number" id="monthly-date" min="1" max="31" placeholder="e.g. 15">
+    <label><strong>Select Dates of the Month:</strong></label><br>
+    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; max-width: 350px;">
+        <!-- Generating 1 to 31 checkboxes dynamically or written directly -->
+        <!-- For clean view, I am writing a few, you can add till 31 or use JS to render -->
+        <label><input type="checkbox" name="monthly_dates" value="1"> 1</label>
+        <label><input type="checkbox" name="monthly_dates" value="2"> 2</label>
+        <label><input type="checkbox" name="monthly_dates" value="3"> 3</label>
+         <label><input type="checkbox" name="monthly_dates" value="4"> 4</label>
+          <label><input type="checkbox" name="monthly_dates" value="5"> 5</label>
+           <label><input type="checkbox" name="monthly_dates" value="6"> 6</label>
+            <label><input type="checkbox" name="monthly_dates" value="7"> 7</label>
+             <label><input type="checkbox" name="monthly_dates" value="8"> 8</label>
+              <label><input type="checkbox" name="monthly_dates" value="9"> 9</label>
+               <label><input type="checkbox" name="monthly_dates" value="10"> 10</label>
+                <label><input type="checkbox" name="monthly_dates" value="11"> 11</label>
+
+                 <label><input type="checkbox" name="monthly_dates" value="12"> 12</label>
+                  <label><input type="checkbox" name="monthly_dates" value="13"> 13</label>
+                   <label><input type="checkbox" name="monthly_dates" value="14"> 14</label>
+         
+        <label><input type="checkbox" name="monthly_dates" value="15"> 15</label>
+         <label><input type="checkbox" name="monthly_dates" value="16"> 16</label>
+          <label><input type="checkbox" name="monthly_dates" value="17"> 17</label>
+           <label><input type="checkbox" name="monthly_dates" value="18"> 18</label>
+            <label><input type="checkbox" name="monthly_dates" value="19"> 19</label>
+             <label><input type="checkbox" name="monthly_dates" value="20"> 20</label>
+              <label><input type="checkbox" name="monthly_dates" value="21"> 21</label>
+               <label><input type="checkbox" name="monthly_dates" value="22"> 22</label>
+                <label><input type="checkbox" name="monthly_dates" value="23"> 23</label>
+                 <!-- <label><input type="checkbox" name="monthly_dates" value="24"> 23</label> -->
+                  <label><input type="checkbox" name="monthly_dates" value="24"> 24</label>
+                   <label><input type="checkbox" name="monthly_dates" value="25"> 25</label>
+                    <label><input type="checkbox" name="monthly_dates" value="26"> 26</label>
+                     <label><input type="checkbox" name="monthly_dates" value="27"> 27</label>
+                      <label><input type="checkbox" name="monthly_dates" value="28"> 28</label>
+                       <label><input type="checkbox" name="monthly_dates" value="29"> 29</label>
+        <label><input type="checkbox" name="monthly_dates" value="30"> 30</label>
+        <label><input type="checkbox" name="monthly_dates" value="31"> 31</label>
+    </div>
+    <!-- <small style="color: gray;">(आप जितने चाहे उतने Dates टिक कर सकते हैं)</small> -->
 </div>
 
 <div id="yearly-options" class="form-group col dynamic-option" style="display: none;">
     <label for="yearly-month">Select Month:</label>
-    <select id="yearly-month">
-        <option value="jan">January</option>
-        <option value="feb">February</option>
-        <option value="dec">December</option>
-    </select>
+   <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px;">
+        <label><input type="checkbox" name="yearly_months" value="jan"> Jan</label>
+        <label><input type="checkbox" name="yearly_months" value="feb"> Feb</label>
+        <label><input type="checkbox" name="yearly_months" value="mar"> Mar</label>
+        <label><input type="checkbox" name="yearly_months" value="apr"> Apr</label>
+        <label><input type="checkbox" name="yearly_months" value="may"> May</label>
+        <label><input type="checkbox" name="yearly_months" value="jun"> Jun</label>
+        <label><input type="checkbox" name="yearly_months" value="jul"> Jul</label>
+        <label><input type="checkbox" name="yearly_months" value="aug"> Aug</label>
+        <label><input type="checkbox" name="yearly_months" value="sep"> Sep</label>
+        <label><input type="checkbox" name="yearly_months" value="oct"> Oct</label>
+        <label><input type="checkbox" name="yearly_months" value="nov"> Nov</label>
+        <label><input type="checkbox" name="yearly_months" value="dec"> Dec</label>
+    </div>
 </div>
 
 <div id="custom-options" class="form-group col dynamic-option" style="display: none;">
@@ -1395,5 +1442,13 @@ document.addEventListener("DOMContentLoaded", function() {
 document.addEventListener("DOMContentLoaded", function() {
     toggleApprovalField();
 });
+</script>
+<script>
+    // सारे सिलेक्टेड हफ़्तों के दिन निकालने के लिए:
+let selectedDays = [];
+document.querySelectorAll('input[name="weekly_days"]:checked').forEach((checkbox) => {
+    selectedDays.push(checkbox.value);
+});
+console.log(selectedDays); // यह आपको ['Mon', 'Wed'] जैसा एरे (array) देगा।
 </script>
 </html>
