@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Responsive Professional Header with Dropdowns</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
- 
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
    <link rel="stylesheet" href="style.css">
 
 <style>
@@ -66,15 +69,15 @@
         }
 
         .btn {
-            padding: 10px 18px;
+            padding: 5px 9px;
             border-radius: 6px;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             border: none;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
             transition: all 0.2s ease;
         }
 
@@ -480,7 +483,76 @@
             }
         }
     </style>
+<style>
+    /* ड्रॉपडाउन को रिलेटिव पोजीशन देना ताकि मेन्यू इसी के नीचे खुले */
+.action-dropdown-wrapper {
+    position: relative;
+    display: inline-block;
+}
 
+/* Three Dots बटन की स्टाइलिंग */
+.btn-dots-menu {
+    background: none;
+    border: none;
+    color: #64748b;
+    padding: 8px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background 0.2s ease;
+}
+
+.btn-dots-menu:hover {
+    background-color: #f1f5f9;
+    color: #1e293b;
+}
+
+/* कस्टम ड्रॉपडाउन लिस्ट - शुरू में छुपी रहेगी */
+.dropdown-menu-custom {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #ffffff;
+    min-width: 150px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+    z-index: 1000;
+    border-radius: 8px;
+    padding: 6px 0;
+    margin: 4px 0 0 0;
+    list-style: none;
+    border: 1px solid #e2e8f0;
+}
+
+/* जब एक्टिव क्लास जुड़ेगी तब मेन्यू दिखाई देगा */
+.dropdown-menu-custom.show {
+    display: block;
+}
+
+/* ड्रॉपडाउन के अंदर आइटम्स की स्टाइलिंग */
+.dropdown-menu-custom li a {
+    color: #334155;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    transition: background 0.15s ease;
+}
+
+.dropdown-menu-custom li a:hover {
+    background-color: #f8fafc;
+}
+
+/* डिवाइडर लाइन */
+.dropdown-divider {
+    height: 1px;
+    margin: 6px 0;
+    overflow: hidden;
+    background-color: #e2e8f0;
+    border: none;
+}
+</style>
 
 </head>
 <body>
@@ -582,17 +654,21 @@
         <div class="page-header">
             <div class="title-area">
                 <h2>Human Resource Management System</h2>
-                <p>Manage comprehensive staff records, search dynamically, and update profiles in real-time.</p>
+                <!-- <p>Manage comprehensive staff records, search dynamically, and update profiles in real-time.</p> -->
             </div>
-            <button class="btn btn-blue" id="openModalBtn"><i class="fa-solid fa-user-plus"></i> Add New Staff</button>
+            <button class="btn btn-blue" id="openModalBtn"><i class="fa-solid fa-user-plus"></i> Add New Staff</button> 
         </div>
 
         <div class="filters-card">
             <div class="filter-title"><i class="fa-solid fa-filter"></i> Live Data Filters</div>
             <div class="filters-grid">
-                <div class="search-wrapper">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Search by name...">
+                <div>
+                    <select>
+                        <option>Select Name</option>
+                          <option>Aashish</option>
+                            <option>Avi</option>
+                              <option>Ankur</option>
+                    </select>
                 </div>
                 <div>
                     <select>
@@ -607,13 +683,21 @@
                               <option>All Departments</option>
                     </select>
                 </div>
+                 <div>
+                    <select>
+                        <option>Branch</option>
+                          <option>All Departments</option>
+                            <option>All Departments</option>
+                              <option>All Departments</option>
+                    </select>
+                </div>
             </div>
         </div>
 
         <div class="records-card">
             <div class="records-header">
-                <h3><i class="fa-solid fa-layer-group"></i> Active Staff Records</h3>
-                <span class="counter-badge">2 Staff Members</span>
+                <h3><i class="fa-solid fa-layer-group"></i> Active Staff</h3>
+                <span class="counter-badge">6 Staff Members</span>
             </div>
             
             <div class="table-responsive">
@@ -621,9 +705,13 @@
                     <thead>
                         <tr>
                             <th>Staff Details</th>
-                            <th>Business / Dept</th>
+                             <th>Father Name</th>
+                             <th>Residential</th>
+                            <th>Business</th>
+                            <th>Department</th>
                             <th>Contact Info</th>
                             <th>Joining / Salary</th>
+                            
                             <th style="text-align: center;">Action</th>
                         </tr>
                     </thead>
@@ -631,14 +719,17 @@
                         <tr>
                             <td>
                                 <span class="primary-text">Rajesh Kumar</span>
-                                <span class="sub-text">Father: Mr. Ram Swaroop</span>
-                                <span class="sub-text"><i class="fa-solid fa-location-dot"></i> Rampur Village</span>
+                                <!-- <span class="sub-text">Father: Mr. Ram Swaroop</span> -->
+                                <!-- <span class="sub-text"><i class="fa-solid fa-location-dot"></i> Rampur Village</span> -->
                             </td>
+                            <td>Rajkumar</td>
+                            <td>moradabad</td>
                             <td>
                                 <span class="biz-tag tag-twodots">TwoDots Films</span>
                                 <span class="sub-text">Creative & Production</span>
                                 <span class="sub-text"><i class="fa-solid fa-building"></i> Mumbai Main</span>
                             </td>
+                            <td>IT</td>
                             <td>
                                 <a href="tel:9876543210" class="contact-phone"><i class="fa-solid fa-phone"></i> 9876543210</a>
                                 <span class="verified-status"><i class="fa-regular fa-circle-check"></i> Profile Verified</span>
@@ -648,32 +739,180 @@
                                 <span class="sub-text">Dec 12, 2025</span>
                             </td>
                             <td style="text-align: center;">
-                                <button class="btn-delete" title="Delete Staff"><i class="fa-regular fa-trash-can"></i></button>
+                              <div class="action-dropdown-wrapper">
+    <button class="btn-dots-menu" onclick="toggleActionDropdown(event, this)" title="Actions">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+    </button>
+    
+    <ul class="dropdown-menu-custom">
+        <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>View</a></li>
+        <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>
+        <li><a class="dropdown-item" href="tms.html" onclick="openAssignModal(); event.preventDefault();"><i class="bi bi-person-plus me-2"></i>Assign</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item text-success" href="#"><i class="bi bi-check2-circle me-2"></i>Complete</a></li>
+        <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Delete</a></li>
+    </ul>
+</div>
                             </td>
                         </tr>
-                        <tr>
+                         <tr>
                             <td>
-                                <span class="primary-text">Sunil Sharma</span>
-                                <span class="sub-text">Father: Mr. K. P. Sharma</span>
-                                <span class="sub-text"><i class="fa-solid fa-location-dot"></i> Chandanpur</span>
+                                <span class="primary-text">Rajesh Kumar</span>
+                                <!-- <span class="sub-text">Father: Mr. Ram Swaroop</span> -->
+                                <!-- <span class="sub-text"><i class="fa-solid fa-location-dot"></i> Rampur Village</span> -->
                             </td>
+                            <td>Rajkumar</td>
+                            <td>moradabad</td>
                             <td>
-                                <span class="biz-tag tag-jnrs">JNRS Hospitality</span>
-                                <span class="sub-text">Operations & Management</span>
-                                <span class="sub-text"><i class="fa-solid fa-building"></i> Goa Resort</span>
+                                <span class="biz-tag tag-twodots">TwoDots Films</span>
+                                <span class="sub-text">Creative & Production</span>
+                                <span class="sub-text"><i class="fa-solid fa-building"></i> Mumbai Main</span>
                             </td>
+                            <td>IT</td>
                             <td>
-                                <a href="tel:9112233445" class="contact-phone"><i class="fa-solid fa-phone"></i> 9112233445</a>
+                                <a href="tel:9876543210" class="contact-phone"><i class="fa-solid fa-phone"></i> 9876543210</a>
                                 <span class="verified-status"><i class="fa-regular fa-circle-check"></i> Profile Verified</span>
                             </td>
                             <td>
-                                <span class="salary-text">₹42,000</span>
-                                <span class="sub-text">Mar 05, 2026</span>
+                                <span class="salary-text">₹35,000</span>
+                                <span class="sub-text">Dec 12, 2025</span>
                             </td>
                             <td style="text-align: center;">
-                                <button class="btn-delete" title="Delete Staff"><i class="fa-regular fa-trash-can"></i></button>
+                              <div class="action-dropdown-wrapper">
+    <button class="btn-dots-menu" onclick="toggleActionDropdown(event, this)" title="Actions">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+    </button>
+    
+    <ul class="dropdown-menu-custom">
+        <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>View</a></li>
+        <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>
+        <li><a class="dropdown-item" href="tms.html" onclick="openAssignModal(); event.preventDefault();"><i class="bi bi-person-plus me-2"></i>Assign</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item text-success" href="#"><i class="bi bi-check2-circle me-2"></i>Complete</a></li>
+        <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Delete</a></li>
+    </ul>
+</div>
                             </td>
                         </tr>
+                         <tr>
+                            <td>
+                                <span class="primary-text">Rajesh Kumar</span>
+                                <!-- <span class="sub-text">Father: Mr. Ram Swaroop</span> -->
+                                <!-- <span class="sub-text"><i class="fa-solid fa-location-dot"></i> Rampur Village</span> -->
+                            </td>
+                            <td>Rajkumar</td>
+                            <td>moradabad</td>
+                            <td>
+                                <span class="biz-tag tag-twodots">TwoDots Films</span>
+                                <span class="sub-text">Creative & Production</span>
+                                <span class="sub-text"><i class="fa-solid fa-building"></i> Mumbai Main</span>
+                            </td>
+                            <td>IT</td>
+                            <td>
+                                <a href="tel:9876543210" class="contact-phone"><i class="fa-solid fa-phone"></i> 9876543210</a>
+                                <span class="verified-status"><i class="fa-regular fa-circle-check"></i> Profile Verified</span>
+                            </td>
+                            <td>
+                                <span class="salary-text">₹35,000</span>
+                                <span class="sub-text">Dec 12, 2025</span>
+                            </td>
+                            <td style="text-align: center;">
+                              <div class="action-dropdown-wrapper">
+    <button class="btn-dots-menu" onclick="toggleActionDropdown(event, this)" title="Actions">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+    </button>
+    
+    <ul class="dropdown-menu-custom">
+        <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>View</a></li>
+        <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>
+        <li><a class="dropdown-item" href="tms.html" onclick="openAssignModal(); event.preventDefault();"><i class="bi bi-person-plus me-2"></i>Assign</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item text-success" href="#"><i class="bi bi-check2-circle me-2"></i>Complete</a></li>
+        <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Delete</a></li>
+    </ul>
+</div>
+                            </td>
+                        </tr>
+                         <tr>
+                            <td>
+                                <span class="primary-text">Rajesh Kumar</span>
+                                <!-- <span class="sub-text">Father: Mr. Ram Swaroop</span> -->
+                                <!-- <span class="sub-text"><i class="fa-solid fa-location-dot"></i> Rampur Village</span> -->
+                            </td>
+                            <td>Rajkumar</td>
+                            <td>moradabad</td>
+                            <td>
+                                <span class="biz-tag tag-twodots">TwoDots Films</span>
+                                <span class="sub-text">Creative & Production</span>
+                                <span class="sub-text"><i class="fa-solid fa-building"></i> Mumbai Main</span>
+                            </td>
+                            <td>IT</td>
+                            <td>
+                                <a href="tel:9876543210" class="contact-phone"><i class="fa-solid fa-phone"></i> 9876543210</a>
+                                <span class="verified-status"><i class="fa-regular fa-circle-check"></i> Profile Verified</span>
+                            </td>
+                            <td>
+                                <span class="salary-text">₹35,000</span>
+                                <span class="sub-text">Dec 12, 2025</span>
+                            </td>
+                            <td style="text-align: center;">
+                              <div class="action-dropdown-wrapper">
+    <button class="btn-dots-menu" onclick="toggleActionDropdown(event, this)" title="Actions">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+    </button>
+    
+    <ul class="dropdown-menu-custom">
+        <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>View</a></li>
+        <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>
+        <li><a class="dropdown-item" href="tms.html" onclick="openAssignModal(); event.preventDefault();"><i class="bi bi-person-plus me-2"></i>Assign</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item text-success" href="#"><i class="bi bi-check2-circle me-2"></i>Complete</a></li>
+        <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Delete</a></li>
+    </ul>
+</div>
+                            </td>
+                        </tr>
+                         <tr>
+                            <td>
+                                <span class="primary-text">Rajesh Kumar</span>
+                                <!-- <span class="sub-text">Father: Mr. Ram Swaroop</span> -->
+                                <!-- <span class="sub-text"><i class="fa-solid fa-location-dot"></i> Rampur Village</span> -->
+                            </td>
+                            <td>Rajkumar</td>
+                            <td>moradabad</td>
+                            <td>
+                                <span class="biz-tag tag-twodots">TwoDots Films</span>
+                                <span class="sub-text">Creative & Production</span>
+                                <span class="sub-text"><i class="fa-solid fa-building"></i> Mumbai Main</span>
+                            </td>
+                            <td>IT</td>
+                            <td>
+                                <a href="tel:9876543210" class="contact-phone"><i class="fa-solid fa-phone"></i> 9876543210</a>
+                                <span class="verified-status"><i class="fa-regular fa-circle-check"></i> Profile Verified</span>
+                            </td>
+                            <td>
+                                <span class="salary-text">₹35,000</span>
+                                <span class="sub-text">Dec 12, 2025</span>
+                            </td>
+                            <td style="text-align: center;">
+                              <div class="action-dropdown-wrapper">
+    <button class="btn-dots-menu" onclick="toggleActionDropdown(event, this)" title="Actions">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+    </button>
+    
+    <ul class="dropdown-menu-custom">
+        <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>View</a></li>
+        <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>
+        <li><a class="dropdown-item" href="tms.html" onclick="openAssignModal(); event.preventDefault();"><i class="bi bi-person-plus me-2"></i>Assign</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item text-success" href="#"><i class="bi bi-check2-circle me-2"></i>Complete</a></li>
+        <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Delete</a></li>
+    </ul>
+</div>
+                            </td>
+                        </tr>
+                        
+                       
                     </tbody>
                 </table>
             </div>
@@ -707,10 +946,26 @@
                         </div>
                         
                         <div class="input-block">
-                            <label>Village / City</label>
+                            <label>Residential Address</label>
                             <input type="text" placeholder="Enter residential city" required>
                         </div>
-                        
+                        <div class="input-block">
+    <label>Staff Type</label>
+    <select id="staffTypeSelect" onchange="toggleReplaceStaffField()" required>
+        <option value="" selected>New Staff</option>
+        <option value="twodots">Replace Staff</option>
+    </select>
+</div>
+<div class="input-block" id="replaceStaffNameBlock" style="display: none; margin-top: 15px;">
+    <label>Select Staff to Replace</label>
+    <select id="replaceStaffNameSelect">
+        <option value="" selected disabled>-- Select Staff Name --</option>
+        <option value="staff1">Amit Kumar</option>
+        <option value="staff2">Rahul Sharma</option>
+        <option value="staff3">Priya Singh</option>
+        <option value="staff4">Vikram Malhotra</option>
+    </select>
+</div>
                         <div class="input-block">
                             <label>Mobile Number</label>
                             <input type="tel" placeholder="10-digit number" pattern="[0-9]{10}" required>
@@ -724,11 +979,18 @@
                                 <option value="jnrs">JNRS Hospitality</option>
                             </select>
                         </div>
-                        
-                        <div class="input-block">
+                         <div class="input-block">
+                            <label>Branch</label>
+                            <select required>
+                                <option value="" disabled selected>Select business</option>
+                                <option value="twodots">TwoDots Films</option>
+                                <option value="jnrs">JNRS Hospitality</option>
+                            </select>
+                        </div>
+                        <!-- <div class="input-block">
                             <label>Branch Location</label>
                             <input type="text" placeholder="E.g., Mumbai Main" required>
-                        </div>
+                        </div> -->
                         
                         <div class="input-block">
                             <label>Department</label>
@@ -753,9 +1015,14 @@
                         </div>
                         
                         <div class="input-block">
-                            <label>Identity Verification ID</label>
-                            <input type="text" placeholder="XXXX-XXXX-XXXX" required>
+                            <label>Adharcard Card Photo</label>
+                            <input type="file" id="attachments" multiple required>
                         </div>
+                         <div class="input-block">
+                            <label>Pan Card Photo</label>
+                            <input type="file" id="attachments" multiple required>
+                        </div>
+                         
                         
                     </div>
                 </form>
@@ -845,5 +1112,53 @@ window.onload = function () {
     }
 
 }
+</script>
+
+<script>
+    function toggleReplaceStaffField() {
+    // दोनों ड्रॉपडाउन एलिमेंट्स को सेलेक्ट करें
+    const staffTypeSelect = document.getElementById('staffTypeSelect');
+    const replaceBlock = document.getElementById('replaceStaffNameBlock');
+    const replaceSelect = document.getElementById('replaceStaffNameSelect');
+
+    // अगर यूजर ने "Replace Staff" (जिसकी वैल्यू twodots है) सेलेक्ट किया
+    if (staffTypeSelect.value === 'twodots') {
+        replaceBlock.style.display = 'block';     // बॉक्स को दिखाओ
+        replaceSelect.setAttribute('required', 'true'); // इसे भरना अनिवार्य (Required) करो
+    } else {
+        replaceBlock.style.display = 'none';      // बॉक्स को छुपाओ
+        replaceSelect.removeAttribute('required'); // Required हटाओ
+        replaceSelect.value = "";                 // वैल्यू को रीसेट करो
+    }
+}
+</script>
+
+
+<script>
+    // थ्री-डॉट्स पर क्लिक करने पर ड्रॉपडाउन को ऑन/ऑफ करने का फंक्शन
+function toggleActionDropdown(event, button) {
+    // टेबल रो (TR) का क्लिक इवेंट रुकने के लिए ताकि मोडल न खुले
+    event.stopPropagation(); 
+    
+    // वर्तमान में क्लिक किए गए थ्री-डॉट्स के साथ वाले मेन्यू को ढूंढें
+    const currentDropdown = button.nextElementSibling;
+    
+    // पेज पर खुले हुए बाकी सभी एक्शन ड्रॉपडाउन बंद करें
+    document.querySelectorAll('.dropdown-menu-custom').forEach(menu => {
+        if (menu !== currentDropdown) {
+            menu.classList.remove('show');
+        }
+    });
+    
+    // सिर्फ इसी मेन्यू को टॉगल (खोलें/बंद करें) करें
+    currentDropdown.classList.toggle('show');
+}
+
+// जब यूज़र मेन्यू के बाहर कहीं भी स्क्रीन पर क्लिक करे, तो खुला हुआ मेन्यू बंद हो जाए
+window.addEventListener('click', function() {
+    document.querySelectorAll('.dropdown-menu-custom').forEach(menu => {
+        menu.classList.remove('show');
+    });
+});
 </script>
 </html>

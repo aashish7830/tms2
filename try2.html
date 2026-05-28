@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Auth - OTP & Google</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 360px; text-align: center; }
+        h2 { margin-bottom: 20px; color: #1a1a1a; font-weight: 600; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+        button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 10px; transition: 0.2s; }
+        button:hover { background: #0056b3; }
+        .google-btn { background: #ea4335; margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .google-btn:hover { background: #d33426; }
+        .divider { margin: 20px 0; border-bottom: 1px solid #e0e0e0; position: relative; }
+        .divider span { position: absolute; top: -10px; background: #fff; padding: 0 10px; left: 50%; transform: translateX(-50%); color: #777; font-size: 12px; }
+        .toggle-link { margin-top: 15px; display: block; color: #007bff; cursor: pointer; font-size: 14px; text-decoration: none; }
+        .toggle-link:hover { text-decoration: underline; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- LOGIN BOX -->
+    <div id="login-box">
+        <h2>Login</h2>
+        <input type="email" id="login-email" placeholder="Email Address" required>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <button onclick="handleLogin()">Sign In</button>
+        
+        <div class="divider"><span>OR</span></div>
+        <button class="google-btn" onclick="loginWithGoogle()">Sign in with Google</button>
+        
+        <span class="toggle-link" onclick="toggleForm('register')">Naya account banayein (Register)</span>
+    </div>
+
+    <!-- REGISTRATION BOX -->
+    <div id="register-box" class="hidden">
+        <h2>Register</h2>
+        <input type="text" id="reg-name" placeholder="Full Name" required>
+        <input type="email" id="reg-email" placeholder="Email Address" required>
+        <input type="password" id="reg-password" placeholder="Password" required>
+        <button onclick="handleRegister()">OTP Bhejein</button>
+        
+        <div class="divider"><span>OR</span></div>
+        <button class="google-btn" onclick="loginWithGoogle()">Sign up with Google</button>
+        
+        <span class="toggle-link" onclick="toggleForm('login')">Pehle se account hai? Login karein</span>
+    </div>
+
+    <!-- OTP VERIFICATION BOX -->
+    <div id="otp-box" class="hidden">
+        <h2>OTP Verification</h2>
+        <p style="font-size: 14px; color: #555;">Aapke email par 6-digits ka OTP bheja gaya hai.</p>
+        <input type="text" id="otp-input" placeholder="Enter 6-Digit OTP" maxlength="6" required>
+        <button onclick="verifyOTP()">Verify & Register</button>
+        <span class="toggle-link" onclick="toggleForm('register')">Wapas jayein</span>
+    </div>
+</div>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+<script>
+    // ⚠️ IMPORTANT: Apne Firebase Console se yeh details badlein
+    const firebaseConfig = {
+        apiKey: "YOUR_FIREBASE_API_KEY",
+        authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_STORAGE_BUCKET",
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+        appId: "YOUR_APP_ID"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const BACKEND_URL = "http://localhost:5000/api";
+    let temporaryEmail = "";
+
+    function toggleForm(form) {
+        document.getElementById('login-box').classList.add('hidden');
+        document.getElementById('register-box').classList.add('hidden');
+        document.getElementById('otp-box').classList.add('hidden');
+
+        if(form === 'login') document.getElementById('login-box').classList.remove('hidden');
+        if(form === 'register') document.getElementById('register-box').classList.remove('hidden');
+        if(form === 'otp') document.getElementById('otp-box').classList.remove('hidden');
+    }
+
+    // G0OGLE LOGIN/SIGNUP FUNCTION
+    function loginWithGoogle() {
+        firebase.auth().signInWithPopup(provider)
+        .then(async (result) => {
+            // Google se secure ID Token nikalein
+            const idToken = await result.user.getIdToken();
+
+            // Token ko backend par verification ke liye bhejein
+            const response = await fetch(`${BACKEND_URL}/google-login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: idToken })
+            });
+
+            const data = await response.json();
+            if(response.ok) {
+                alert("Google Auth Successful! JWT Token: " + data.token);
+                console.log("User Data:", data.user);
+            } else {
+                alert("Backend verification failed: " + data.message);
+            }
+        }).catch((error) => {
+            alert("Google Auth Failed: " + error.message);
+        });
+    }
+
+    // SELF REGISTRATION (STEP 1: SEND OTP)
+    async function handleRegister() {
+        const name = document.getElementById('reg-name').value;
+        const email = document.getElementById('reg-email').value;
+        const password = document.getElementById('reg-password').value;
+
+        if(!name || !email || !password) return alert("Kripya saari details bharein!");
+
+        temporaryEmail = email;
+
+        const response = await fetch(`${BACKEND_URL}/send-otp`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password })
+        });
+
+        const data = await response.json();
+        if(response.ok) {
+            alert(data.message);
+            toggleForm('otp');
+        } else {
+            alert(data.message);
+        }
+    }
+
+    // SELF REGISTRATION (STEP 2: VERIFY OTP)
+    async function verifyOTP() {
+        const otp = document.getElementById('otp-input').value;
+
+        const response = await fetch(`${BACKEND_URL}/verify-otp`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: temporaryEmail, otp })
+        });
+
+        const data = await response.json();
+        if(response.ok) {
+            alert("Registration Successful! Ab aap login kar sakte hain.");
+            toggleForm('login');
+        } else {
+            alert(data.message);
+        }
+    }
+
+    // SELF LOGIN
+    async function handleLogin() {
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+
+        const response = await fetch(`${BACKEND_URL}/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+        if(response.ok) {
+            alert("Login Successful! JWT Token: " + data.token);
+        } else {
+            alert(data.message);
+        }
+    }
+</script>
+<script>
+    const express = require('express');
+const cors = require('cors');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const { OAuth2Client } = require('google-auth-library');
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// CONFIGURATIONS
+const JWT_SECRET = "aapka_super_secret_key_123";
+// ⚠️ Google Console -> Credentials me se Client ID yahan dalein
+const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"; 
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+
+// Dummy Database
+let usersDB = [];
+let tempOTPStore = {}; 
+
+// Nodemailer Setup (Gmail)
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'YOUR_EMAIL@gmail.com', 
+        pass: 'YOUR_GMAIL_APP_PASSWORD' // Google Account -> Security -> App Passwords me banta hai
+    }
+});
+
+// 1. ROUTE: Send OTP (Self-Registration Step 1)
+app.post('/api/send-otp', async (req, res) => {
+    const { name, email, password } = req.body;
+
+    const userExists = usersDB.find(u => u.email === email);
+    if (userExists) return res.status(400).json({ message: "Email pehle se registered hai!" });
+
+    // 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Temporary store data
+    tempOTPStore[email] = { name, email, password: hashedPassword, otp };
+
+    const mailOptions = {
+        from: 'YOUR_EMAIL@gmail.com',
+        to: email,
+        subject: 'Aapka Verification OTP',
+        text: `Namaste ${name}, aapka account verification OTP hai: ${otp}`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error(error);
+            return res.status(500).json({ message: "Email bhejne me dikkat aayi!" });
+        }
+        res.status(200).json({ message: "OTP aapke email par bhej diya gaya hai!" });
+    });
+});
+
+// 2. ROUTE: Verify OTP & Register (Self-Registration Step 2)
+app.post('/api/verify-otp', (req, res) => {
+    const { email, otp } = req.body;
+    const tempUser = tempOTPStore[email];
+
+    if (!tempUser) return res.status(400).json({ message: "Koyi data nahi mila. Fir se try karein." });
+
+    if (tempUser.otp === otp) {
+        // Main Database me save karein
+        usersDB.push({
+            name: tempUser.name,
+            email: tempUser.email,
+            password: tempUser.password,
+            authType: 'self'
+        });
+
+        delete tempOTPStore[email]; // Clear temp cache
+        return res.status(200).json({ message: "Registration successful!" });
+    } else {
+        return res.status(400).json({ message: "Galat OTP! Kripya fir se check karein." });
+    }
+});
+
+// 3. ROUTE: Self Login (Email & Password)
+app.post('/api/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    const user = usersDB.find(u => u.email === email);
+    if (!user) return res.status(400).json({ message: "User nahi mila!" });
+    if (user.authType === 'google') return res.status(400).json({ message: "Kripya Google Login ka upyog karein!" });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Galat password!" });
+
+    const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+    res.status(200).json({ message: "Login successful", token });
+});
+
+// 4. ROUTE: Google Login & Auto-Registration (Dono ek sath)
+app.post('/api/google-login', async (req, res) => {
+    const { token } = req.body;
+
+    try {
+        // Google Token ko verify karein ki yeh genuine hai
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: GOOGLE_CLIENT_ID,
+        });
+        
+        const payload = ticket.getPayload();
+        const { email, name, picture } = payload; 
+
+        // Check karein kya user database me hai?
+        let user = usersDB.find(u => u.email === email);
+
+        if (!user) {
+            // Agar pehle se account nahi hai, toh Google se details lekar AUTOMATIC REGISTER kar dein
+            user = { name, email, picture, authType: 'google' };
+            usersDB.push(user);
+            console.log("Naya User Google se automatically register hua:", email);
+        }
+
+        // Login session ke liye apna custom JWT token dein
+        const jwtToken = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: '2h' });
+
+        res.status(200).json({ 
+            message: "Google Authentication Successful", 
+            token: jwtToken,
+            user: { name: user.name, email: user.email }
+        });
+
+    } catch (error) {
+        console.error("Google Auth Error:", error);
+        res.status(400).json({ message: "Google token verification fail ho gayi!" });
+    }
+});
+
+// Server Start
+app.listen(5000, () => console.log("🔥 Server running securely on port 5000"));
+</script>
+</body>
+</html>

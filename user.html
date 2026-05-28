@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Professional Header with Dropdowns</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+ 
+   <link rel="stylesheet" href="style.css">
+
+
+<style>
+    /* ==========================================================================
+   1. VARIABLES (कलर्स और स्टाइल को आसानी से चेंज करने के लिए)
+   ========================================================================== */
+:root {
+    /* Base Backgrounds */
+    --bg-main: #f8f9fa;
+    --bg-card: #ffffff;
+    
+    /* Typography Colors */
+    --text-muted: #8a92a6;
+    --text-main: #1e293b;
+    
+    /* Theme Colors (Text / Light Background) */
+    --clr-total: #4f46e5;      --bg-total: #eeebff;
+    --clr-pending: #d97706;    --bg-pending: #fef3c7;
+    --clr-completed: #16a34a;  --bg-completed: #dcfce7;
+    --clr-urgent: #dc2626;     --bg-urgent: #fee2e2;
+    --clr-overdue: #7c3aed;    --bg-overdue: #f3e8ff;
+    --clr-todays: #2563eb;     --bg-todays: #dbeafe;
+    
+    /* Global Radius & Shadows */
+    --radius-card: 16px;
+    --radius-icon: 12px; /* Circle की जगह modern rounded square लुक के लिए (Optional) */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.02);
+    --shadow-md: 0 10px 20px rgba(0, 0, 0, 0.04);
+    --shadow-hover: 0 15px 30px rgba(79, 70, 229, 0.08); /* Soft primary tint shadow */
+}
+
+/* ==========================================================================
+   2. MAIN LAYOUT
+   ========================================================================== */
+.stats-container {
+    display: grid;
+    /* Responsive Grid: स्क्रीन छोटी होने पर कार्ड्स अपने आप नीचे सेट हो जाएंगे */
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 24px;
+    background-color: var(--bg-main);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* ==========================================================================
+   3. CARD STYLING (User-Friendly & Interactive)
+   ========================================================================== */
+.stat-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-card);
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.03); /* बहुत हल्का बॉर्डर क्लीन लुक के लिए */
+    box-shadow: var(--shadow-md);
+    cursor: pointer; /* यूज़र को पता चलेगा कि कार्ड क्लिकेबल है */
+    user-select: none; /* डबल क्लिक करने पर टेक्स्ट ब्लू/सिलेक्ट नहीं होगा */
+    
+    /* Smooth transition for awesome UX */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Interactive Hover State */
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(79, 70, 229, 0.15); /* होवर पर हल्का सा ग्लो */
+}
+
+/* Active/Press State (जब यूज़र क्लिक करे) */
+.stat-card:active {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ==========================================================================
+   4. TYPOGRAPHY & INTERNAL ELEMENTS
+   ========================================================================== */
+.stat-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.stat-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.stat-number {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+    line-height: 1.1;
+}
+
+/* ==========================================================================
+   5. ICONS (Modern Rounded Shape)
+   ========================================================================== */
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-icon); /* 50% की जगह modern square-rounded लुक */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+
+/* कार्ड होवर होने पर आइकॉन थोड़ा बड़ा (Scale) होगा */
+.stat-card:hover .stat-icon {
+    transform: scale(1.1);
+}
+
+/* ==========================================================================
+   6. DYNAMIC COLORS MAPPING
+   ========================================================================== */
+/* Total Tasks */
+.total-color { color: var(--text-main); }
+.icon-total { background-color: var(--bg-total); color: var(--clr-total); }
+
+/* Pending */
+.pending-color { color: var(--clr-pending); }
+.icon-pending { background-color: var(--bg-pending); color: var(--clr-pending); }
+
+/* Completed */
+.completed-color { color: var(--clr-completed); }
+.icon-completed { background-color: var(--bg-completed); color: var(--clr-completed); }
+
+/* Urgent */
+.urgent-color { color: var(--clr-urgent); }
+.icon-urgent { background-color: var(--bg-urgent); color: var(--clr-urgent); }
+
+/* Overdue */
+.overdue-color { color: var(--clr-overdue); }
+.icon-overdue { background-color: var(--bg-overdue); color: var(--clr-overdue); }
+
+/* Today's */
+.todays-color { color: var(--clr-todays); }
+.icon-todays { background-color: var(--bg-todays); color: var(--clr-todays); }
+</style>
+
+
+
+<style>
+    /* ==========================================================================
+   TASK SECTION & TABLE STYLING
+   ========================================================================== */
+.task-section {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px auto;
+    max-width: 1200px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 20px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.task-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.task-table th {
+    padding: 14px 16px;
+    color: #8a92a6;
+    font-size: 14px;
+    font-weight: 600;
+    border-bottom: 1px solid #edf2f7;
+}
+
+/* User Interactive Rows */
+.task-row {
+    border-bottom: 1px solid #f1f5f9;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.task-row:hover {
+    background-color: #f8fafc; /* Hover effect when user focuses row */
+}
+
+.task-name-cell {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 12px;
+}
+
+.main-task-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.sub-task-desc {
+    font-size: 12px;
+    color: #a0aec0;
+    margin-top: 4px;
+}
+
+/* Status Select Styles matching image */
+.status-select {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    outline: none;
+}
+
+.select-pending { background-color: #fff9db; color: #f59f00; border-color: #ffe066; }
+.select-progress { background-color: #e7f5ff; color: #1c7ed6; border-color: #a5d8ff; }
+.select-verified { background-color: #ebfbee; color: #2b8a3e; border-color: #b2f2bb; }
+
+/* Badges Styling */
+.badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.badge-urgent { background-color: #fff5f5; color: #fa5252; }
+.badge-medium { background-color: #fff9db; color: #f59f00; }
+.badge-normal { background-color: #ebfbee; color: #40c057; }
+
+.due-time-text {
+    font-size: 14px;
+    color: #4a5568;
+}
+
+/* Approval Texts */
+.approval-text { font-size: 13px; font-weight: 600; }
+.text-pending-app { color: #845ef7; }
+.text-not-req { color: #8c9196; }
+.text-approved { color: #2b8a3e; }
+
+/* Buttons & Custom Remark Trigger */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-open, .btn-remark {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+}
+
+.btn-open { background-color: #4f46e5; color: white; }
+.btn-open:hover { background-color: #4338ca; }
+
+.btn-remark { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+.btn-remark:hover { background-color: #e2e8f0; }
+
+/* ==========================================================================
+   MODAL WINDOW STYLING (User-Friendly Popup Box)
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.4); /* Backdrop Blur Effect */
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background: #ffffff;
+    width: 100%;
+    max-width: 550px;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.modal-header h4 { font-size: 18px; font-weight: 700; color: #1e293b; margin: 0; }
+.close-btn { background: none; border: none; font-size: 24px; color: #64748b; cursor: pointer; }
+
+.modal-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    font-size: 14px;
+    color: #475569;
+    background: #f8fafc;
+    padding: 14px;
+    border-radius: 8px;
+}
+
+.modal-divider { border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0; }
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.form-label { font-size: 13px; font-weight: 600; color: #334155; }
+.form-textarea {
+    width: 100%; height: 80px; padding: 10px; border-radius: 8px;
+    border: 1px solid #cbd5e1; outline: none; resize: none; font-family: inherit;
+}
+.form-textarea:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+
+/* File Upload Button Design */
+.file-upload-wrapper { width: 100%; }
+.file-input-hidden { display: none; }
+.file-upload-btn {
+    display: block; text-align: center; padding: 16px; border: 2px dashed #cbd5e1;
+    border-radius: 8px; cursor: pointer; color: #64748b; font-size: 13px; background: #f8fafc;
+    transition: all 0.2s;
+}
+.file-upload-btn:hover { border-color: #4f46e5; background: #f5f3ff; color: #4f46e5; }
+
+.modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.btn-primary { background-color: #4f46e5; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 500; }
+.btn-secondary { background-color: #f1f5f9; color: #475569; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+</style>
+
+
+
+
+</head>
+<body>
+
+    <header class="main-header">
+        
+        <div class="header-left">
+            <div class="custom-menu-container">
+                <button class="custom-menu-btn" id="menuBtn">
+                    <span class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                    <span>Menu</span>
+                </button>
+                
+                <ul class="custom-dropdown" id="dropdownMenu">
+                     <li><a href="index.html"><i class="fa-solid fa-list-check"></i> Dashboard</a></li>
+                    <li><a href="tms.html"><i class="fa-solid fa-list-check"></i> TMS</a></li>
+                    <li><a href="hrms.html"><i class="fa-solid fa-users-gear"></i> HRMS</a></li>
+                    <li><a href="cms.html"><i class="fa-solid fa-folder-open"></i> CMS</a></li>
+                    <li><a href="portfolio-hero.html"><i class="fa-solid fa-chart-pie"></i> Business</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="header-right">
+            
+            <div class="search-container">
+                <input type="text" placeholder="Search..." class="search-input">
+            </div>
+
+            <div class="notification-wrapper">
+                <div class="notification-container" id="notiToggle">
+                    <i class="fa-regular fa-bell bell-icon"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="noti-header">
+                        <h3>Notifications</h3>
+                        <a href="#mark-read" class="mark-all-btn">Mark all as read</a>
+                    </div>
+                    <ul class="noti-list">
+                        <li class="noti-item unread">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" class="noti-avatar" alt="User">
+                            <div class="noti-content">
+                                <span class="noti-text"><strong>Riya Sen</strong> assigned you a task in <strong>HRMS</strong>.</span>
+                                <span class="noti-time">3 mins ago</span>
+                            </div>
+                        </li>
+                        <li class="noti-item unread">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100" class="noti-avatar" alt="User">
+                            <div class="noti-content">
+                                <span class="noti-text"><strong>Rahul Dev</strong> requested approval for <strong>Business</strong> budget.</span>
+                                <span class="noti-time">1 hour ago</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="noti-footer">
+                        <a href="#all-notifications">View all notifications</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vertical-divider"></div>
+
+            <div class="user-profile-wrapper">
+                <div class="user-profile" id="profileToggle">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" alt="Amit Sharma" class="profile-img">
+                    <div class="user-details">
+                        <span class="user-name">Amit Sharma</span>
+                        <span class="user-role">Workspace Master</span>
+                    </div>
+                    <i class="fa-solid fa-caret-down dropdown-arrow"></i>
+                </div>
+
+                <div class="profile-dropdown-menu" id="profileDropdown">
+                    <div class="dropdown-heading">Account Management</div>
+                    <ul>
+                        <li><a href="#profile"><i class="fa-regular fa-user"></i> My Profile</a></li>
+                        <li><a href="#settings"><i class="fa-solid fa-gear"></i> Account Settings</a></li>
+                        <li><a href="#security"><i class="fa-regular fa-shield-halved"></i> Security Status</a></li>
+                        <div class="dropdown-divider"></div>
+                        <li><a href="#logout" class="logout-link"><i class="fa-solid fa-right-from-bracket"></i> Logout Account</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </header>
+ 
+
+
+
+
+
+<section class="stats-container">
+    <!-- Total Tasks Card -->
+    <div class="stat-card">
+        <div class="stat-info">
+            <span class="stat-title">TOTAL TASWS</span>
+            <h2 class="stat-number total-color">42</h2>
+        </div>
+        <div class="stat-icon icon-total">
+            <!-- FontAwesome or SVG Icon here -->
+            <i class="fas fa-tasks"></i>
+        </div>
+    </div>
+
+    <!-- Pending Card -->
+    <div class="stat-card">
+        <div class="stat-info">
+            <span class="stat-title">PENDING</span>
+            <h2 class="stat-number pending-color">12</h2>
+        </div>
+        <div class="stat-icon icon-pending">
+            <i class="far fa-clock"></i>
+        </div>
+    </div>
+
+    <!-- Completed Card -->
+    <div class="stat-card">
+        <div class="stat-info">
+            <span class="stat-title">COMPLETED</span>
+            <h2 class="stat-number completed-color">25</h2>
+        </div>
+        <div class="stat-icon icon-completed">
+            <i class="far fa-check-circle"></i>
+        </div>
+    </div>
+
+    <!-- Urgent Card -->
+    <div class="stat-card">
+        <div class="stat-info">
+            <span class="stat-title">URGENT</span>
+            <h2 class="stat-number urgent-color">03</h2>
+        </div>
+        <div class="stat-icon icon-urgent">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+    </div>
+
+    <!-- Overdue Card -->
+    <div class="stat-card">
+        <div class="stat-info">
+            <span class="stat-title">OVERDUE</span>
+            <h2 class="stat-number overdue-color">02</h2>
+        </div>
+        <div class="stat-icon icon-overdue">
+            <i class="fas fa-history"></i>
+        </div>
+    </div>
+
+    <!-- Today's Card -->
+    <div class="stat-card">
+        <div class="stat-info">
+            <span class="stat-title">TODAY'S</span>
+            <h2 class="stat-number todays-color">05</h2>
+        </div>
+        <div class="stat-icon icon-todays">
+            <i class="far fa-calendar-alt"></i>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+<!-- Task Table Section Layout based on image_ba86ea.png -->
+<section class="task-section">
+    <h3 class="section-title">Assigned Workflow Tasks</h3>
+    
+    <div class="table-responsive">
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Priority</th>
+                    <th>Due Time</th>
+                    <th>Status</th>
+                    <th>Approval</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Row 1 -->
+                <tr class="task-row" onclick="openTaskModal('Daily Production Server Backup', 'Urgent', 'Today, 05:00 PM', 'Pending', 'Pending Approval', 'Daily Repeating')">
+                    <td>
+                        <div class="task-name-cell">
+                            <span class="main-task-name">Daily Production Server Backup</span>
+                            <span class="sub-task-desc"><i class="fas fa-sync-alt"></i> Daily Repeating</span>
+                        </div>
+                    </td>
+                    <td><span class="badge badge-urgent">Urgent</span></td>
+                    <td class="due-time-text">Today, 05:00 PM</td>
+                    <td>
+                        <!-- Dropdown stopPropagation handles clicking select without opening modal -->
+                        <select class="status-select select-pending" onclick="event.stopPropagation();">
+                            <option value="pending" selected>Pending</option>
+                            <option value="progress">In Progress</option>
+                            <option value="verified">Verified</option>
+                        </select>
+                    </td>
+                    <td><span class="approval-text text-pending-app">Pending Approval</span></td>
+                    <td>
+                        <div class="action-buttons" onclick="event.stopPropagation();">
+                            <button class="btn-open" onclick="openTaskModal('Daily Production Server Backup', 'Urgent', 'Today, 05:00 PM', 'Pending', 'Pending Approval', 'Daily Repeating')"><i class="far fa-folder-open"></i> Open</button>
+                            <button class="btn-remark" onclick="openTaskModal('Daily Production Server Backup', 'Urgent', 'Today, 05:00 PM', 'Pending', 'Pending Approval', 'Daily Repeating')"><i class="far fa-comment-alt"></i> Remark</button>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Row 2 -->
+                <tr class="task-row" onclick="openTaskModal('Q2 Voucher Financial Audit', 'Medium', '29 May, 02:00 PM', 'In Progress', 'Not Required', 'Monthly Audit')">
+                    <td>
+                        <div class="task-name-cell">
+                            <span class="main-task-name">Q2 Voucher Financial Audit</span>
+                            <span class="sub-task-desc"><i class="fas fa-sync-alt"></i> Monthly Audit</span>
+                        </div>
+                    </td>
+                    <td><span class="badge badge-medium">Medium</span></td>
+                    <td class="due-time-text">29 May, 02:00 PM</td>
+                    <td>
+                        <select class="status-select select-progress" onclick="event.stopPropagation();">
+                            <option value="pending">Pending</option>
+                            <option value="progress" selected>In Progress</option>
+                            <option value="verified">Verified</option>
+                        </select>
+                    </td>
+                    <td><span class="approval-text text-not-req">Not Required</span></td>
+                    <td>
+                        <div class="action-buttons" onclick="event.stopPropagation();">
+                            <button class="btn-open" onclick="openTaskModal('Q2 Voucher Financial Audit', 'Medium', '29 May, 02:00 PM', 'In Progress', 'Not Required', 'Monthly Audit')"><i class="far fa-folder-open"></i> Open</button>
+                            <button class="btn-remark" onclick="openTaskModal('Q2 Voucher Financial Audit', 'Medium', '29 May, 02:00 PM', 'In Progress', 'Not Required', 'Monthly Audit')"><i class="far fa-comment-alt"></i> Remark</button>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Row 3 -->
+                <tr class="task-row" onclick="openTaskModal('Employee Attendance Synchronization', 'Normal', '25 May, 11:00 AM', 'Verified', 'Approved & Clear', 'Weekly Sync')">
+                    <td>
+                        <div class="task-name-cell">
+                            <span class="main-task-name">Employee Attendance Synchronization</span>
+                            <span class="sub-task-desc"><i class="fas fa-sync-alt"></i> Weekly Sync</span>
+                        </div>
+                    </td>
+                    <td><span class="badge badge-normal">Normal</span></td>
+                    <td class="due-time-text">25 May, 11:00 AM</td>
+                    <td>
+                        <select class="status-select select-verified" onclick="event.stopPropagation();">
+                            <option value="pending">Pending</option>
+                            <option value="progress">In Progress</option>
+                            <option value="verified" selected>Verified</option>
+                        </select>
+                    </td>
+                    <td><span class="approval-text text-approved">Approved & Clear</span></td>
+                    <td>
+                        <div class="action-buttons" onclick="event.stopPropagation();">
+                            <button class="btn-open" onclick="openTaskModal('Employee Attendance Synchronization', 'Normal', '25 May, 11:00 AM', 'Verified', 'Approved & Clear', 'Weekly Sync')"><i class="far fa-folder-open"></i> Open</button>
+                            <button class="btn-remark" onclick="openTaskModal('Employee Attendance Synchronization', 'Normal', '25 May, 11:00 AM', 'Verified', 'Approved & Clear', 'Weekly Sync')"><i class="far fa-comment-alt"></i> Remark</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ==================== USER-FRIENDLY DETAILS MODAL ==================== -->
+<div id="taskModal" class="modal-overlay" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h4 id="modalTaskName">Task Details</h4>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-info-grid">
+                <div><strong>Category:</strong> <span id="modalDesc"></span></div>
+                <div><strong>Priority:</strong> <span id="modalPriority"></span></div>
+                <div><strong>Due Time:</strong> <span id="modalDue"></span></div>
+                <div><strong>Current Status:</strong> <span id="modalStatus"></span></div>
+            </div>
+
+            <hr class="modal-divider">
+
+            <!-- User Actions inside Modal -->
+            <div class="form-group">
+                <label class="form-label"><i class="far fa-comment-dots"></i> Add Your Remark</label>
+                <textarea id="taskRemarkInput" class="form-textarea" placeholder="Type task progress details or remarks here..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label"><i class="fas fa-paperclip"></i> Upload Relevant File</label>
+                <div class="file-upload-wrapper">
+                    <input type="file" id="taskFileInput" class="file-input-hidden" onchange="updateFileName(this)">
+                    <label for="taskFileInput" class="file-upload-btn">
+                        <i class="fas fa-cloud-upload-alt"></i> <span id="fileNameLabel">Choose a file or drag it here</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+            <button class="btn-primary" onclick="saveTaskData()">Save & Submit</button>
+        </div>
+    </div>
+</div>
+
+
+
+<div style="text-align: center; padding: 20px;">
+    <button onclick="openWorkflowModal()" style="background: #4f46e5; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: sans-serif;">
+        <i class="fa-solid fa-bell"></i> Open Task Workflow Pop-up
+    </button>
+</div>
+
+<div id="toastNotification" style="position: fixed; top: 20px; right: 20px; background: #333; color: #fff; padding: 12px 25px; border-radius: 8px; font-size: 14px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); display: none; z-index: 10001; align-items: center; gap: 10px; font-family: sans-serif;">
+    <i class="fa-solid fa-bell style-color: #eab308;"></i> <span id="toastText">New Alert</span>
+</div>
+
+<div id="workflowPopupModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: flex-start; overflow-y: auto; padding: 40px 20px; z-index: 10000; box-sizing: border-box;">
+    
+    <div class="user-workflow-card" style="background: rgba(255, 255, 255, 0.98); border: 1px solid rgba(226, 232, 240, 0.8); padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); font-family: 'Segoe UI', system-ui, sans-serif; width: 100%; max-width: 500px; border-radius: 16px; position: relative; box-sizing: border-box; margin: auto;">
+        
+        <button onclick="closeWorkflowModal()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 24px; color: #94a3b8; cursor: pointer;">&times;</button>
+        
+        <div style="border-bottom: 1px solid #edf2f7; padding-bottom: 15px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-right: 20px;">
+                <span style="font-size: 12px; font-weight: 700; color: #4f46e5; text-transform: uppercase; letter-spacing: 0.5px;">Task ID: #TSK-2026</span>
+                <span id="overdueBadge" style="background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 5px;">
+                    <i class="fa-solid fa-triangle-exclamation"></i> OVERDUE WARNING
+                </span>
+            </div>
+            
+            <h3 id="panelTaskName" style="margin: 0 0 8px 0; font-size: 20px; color: #1e293b;">Fix Navigation Bug</h3>
+            <p id="panelDesc" style="margin: 0; font-size: 13px; color: #64748b; line-height: 1.5;">Navigation dropdown is overlapping with hero banner on mobile screen heights. Needs CSS z-index and flex alignment overhaul.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px; background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+            <div><strong style="color: #475569;">Dept:</strong> <span id="mDept">IT Operations</span></div>
+            <div><strong style="color: #475569;">Priority:</strong> <span id="mPriority" style="color: #dc2626; font-weight: bold;">Urgent</span></div>
+            <div><strong style="color: #475569;">Due Time:</strong> <span id="mDue" style="color: #475569; font-weight: 600;">05:00 PM</span></div>
+            <div><strong style="color: #475569;">Frequency:</strong> <span id="mFreq">Daily Repeated</span></div>
+            <div><strong style="color: #475569;">Approval Reqd:</strong> <span id="mAppreq">Yes</span></div>
+            <div><strong style="color: #475569;">Verification:</strong> <span id="mVerreq">Yes (Security)</span></div>
+            <div style="grid-column: 1/-1; border-top: 1px solid #e2e8f0; padding-top: 8px; margin-top: 4px;">
+                <i class="fa-solid fa-paperclip" style="color:#4f46e5;"></i> <strong>Admin Attachment:</strong> 
+                <a href="#" id="downloadLink" style="color: #4f46e5; text-decoration: none; font-weight: 600; margin-left: 5px;" download><i class="fa-solid fa-file-arrow-down"></i> Download Reference.zip</a>
+            </div>
+        </div>
+
+        <div id="acceptRejectZone" style="background: #fffdf5; border: 1px solid #fef08a; padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+            <label style="display: block; font-size: 13px; font-weight: 700; color: #856404; margin-bottom: 10px;"><i class="fa-solid fa-circle-question"></i> Respond to Assigned Task:</label>
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <button class="accept-btn" onclick="handleAccept()" style="flex: 1; background: #16a34a; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s;"><i class="fa-solid fa-thumbs-up"></i> Accept</button>
+                <button class="reject-btn" onclick="toggleRejectReason()" style="flex: 1; background: #dc2626; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s;"><i class="fa-solid fa-thumbs-down"></i> Reject</button>
+            </div>
+            <div id="rejectReasonBlock" style="display: none; margin-top: 10px;">
+                <textarea id="rejectReasonText" placeholder="Write reason for rejection here..." style="width: 100%; height: 60px; border: 1px solid #fca5a5; border-radius: 6px; padding: 8px; font-size: 12px; outline: none; box-sizing: border-box; resize: none;"></textarea>
+                <button onclick="submitRejection()" style="background: #7f1d1d; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 11px; margin-top: 5px; cursor: pointer;">Submit Rejection</button>
+            </div>
+        </div>
+
+        <div id="mainOperationsBlock" style="opacity: 0.4; pointer-events: none; transition: 0.3s;">
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                <button id="startBtn" onclick="startTask()" style="background: #2563eb; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 600; cursor: pointer;"><i class="fa-solid fa-play"></i> Start Task</button>
+                <button id="holdBtn" onclick="toggleHoldBlock()" style="background: #d97706; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 600; cursor: pointer;"><i class="fa-solid fa-pause"></i> Put On Hold</button>
+                <button id="extBtn" onclick="toggleExtensionBlock()" style="background: #7c3aed; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 600; cursor: pointer; grid-column: 1/-1;"><i class="fa-solid fa-clock-rotate-left"></i> Request Extension (Extra Time)</button>
+            </div>
+
+            <div id="holdBlock" style="display: none; background: #fffbeb; border: 1px solid #fde68a; padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+                <textarea id="holdReason" placeholder="Reason for putting task on hold..." style="width:100%; height:50px; border:1px solid #cbd5e1; border-radius:6px; font-size:12px; padding:6px; box-sizing:border-box;"></textarea>
+                <button onclick="confirmHold()" style="background:#b45309; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; margin-top:5px; cursor:pointer;">Confirm Hold</button>
+            </div>
+
+            <div id="extensionBlock" style="display: none; background: #f5f3ff; border: 1px solid #ddd6fe; padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+                <label style="font-size:11px; font-weight:600; color:#6d28d9; display:block; margin-bottom:3px;">Suggested New Deadline:</label>
+                <input type="datetime-local" id="newDeadline" style="width:100%; padding:5px; border:1px solid #cbd5e1; border-radius:6px; font-size:12px; margin-bottom:8px; box-sizing:border-box;">
+                <textarea id="extReason" placeholder="Reason for asking extra time..." style="width:100%; height:50px; border:1px solid #cbd5e1; border-radius:6px; font-size:12px; padding:6px; box-sizing:border-box;"></textarea>
+                <button onclick="submitExtension()" style="background:#6d28d9; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; margin-top:5px; cursor:pointer;">Send Extension Request</button>
+            </div>
+
+            <div style="margin-bottom: 20px; background: #fff; border: 1px solid #e2e8f0; padding: 12px; border-radius: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <label style="font-size: 12px; font-weight: 700; color: #344054;"><i class="fa-solid fa-chart-line"></i> Update Task Completion %</label>
+                    <select id="progressSelect" onchange="updateProgressBar()" style="padding: 4px 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px; font-weight: 600;">
+                        <option value="0">0%</option>
+                        <option value="10">10%</option>
+                        <option value="25">25%</option>
+                        <option value="50">50%</option>
+                        <option value="75">75%</option>
+                        <option value="100">100%</option>
+                    </select>
+                </div>
+                <div style="width: 100%; background: #f1f5f9; height: 8px; border-radius: 10px; overflow: hidden;">
+                    <div id="liveProgressBar" style="width: 0%; background: linear-gradient(90deg, #4f46e5, #22c55e); height: 100%; transition: width 0.4s ease;"></div>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; border: 1px dashed #cbd5e1; padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+                <label style="display: block; font-size: 12px; font-weight: 700; color: #1e293b; margin-bottom: 8px;"><i class="fa-solid fa-cloud-arrow-up"></i> Proof / Work Submission Area</label>
+                
+                <input type="file" id="workProofs" multiple style="width: 100%; font-size: 12px; color: #475569; background: white; padding: 6px; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 10px; box-sizing: border-box;">
+                
+                <textarea id="completionNotes" placeholder="Describe completed work (e.g. Navigation issue fixed successfully and tested on mobile)..." style="width: 100%; height: 60px; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px; font-size: 12px; outline: none; box-sizing: border-box; resize: none; margin-bottom: 10px;"></textarea>
+
+                <textarea id="taskGlobalRemark" placeholder="Add optional persistent remark/comment for DB..." style="width: 100%; height: 45px; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px; font-size: 12px; outline: none; box-sizing: border-box; background:#fffdf5; resize: none;"></textarea>
+            </div>
+
+            <button class="complete-btn" onclick="submitWorkAndComplete()" style="width: 100%; background: #16a34a; color: white; border: none; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2); transition: 0.2s;"><i class="fa-solid fa-circle-check"></i> Mark Complete & Submit Workflow</button>
+
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+ <script>
+// जब पूरा पेज लोड हो जाए तब एलिमेंट्स को सुरक्षित तरीके से सेलेक्ट करें
+let taskTableModal = null;
+let workflowPopupModalElement = null;
+
+document.addEventListener("DOMContentLoaded", () => {
+    taskTableModal = document.getElementById('taskModal');
+    workflowPopupModalElement = document.getElementById('workflowPopupModal');
+    
+    // ऑटोमैटिक लोड होने वाला लॉजिक (अगर आपके पेज पर 'toastNotification' है तो)
+    setTimeout(() => {
+        if (typeof openWorkflowModal === "function") {
+            openWorkflowModal();
+            if (document.getElementById('toastNotification')) {
+                showToast("New Task Assigned: Fix Navigation Bug");
+            }
+        }
+    }, 1000);
+});
+
+// =================================================================
+// 1. FIRST MODAL LOGIC (Table rows, Cancel, Save & Submit)
+// =================================================================
+
+// टेबल रो या ओपन बटन क्लिक करने पर ये खुलेगा
+function openTaskModal(name, priority, due, status, approval, description) {
+    if (!taskTableModal) taskTableModal = document.getElementById('taskModal');
+    
+    document.getElementById('modalTaskName').innerText = name;
+    document.getElementById('modalDesc').innerText = description;
+    document.getElementById('modalPriority').innerText = priority;
+    document.getElementById('modalDue').innerText = due;
+    document.getElementById('modalStatus').innerText = status;
+    
+    // पुराने इनपुट साफ करें
+    document.getElementById('taskRemarkInput').value = "";
+    document.getElementById('taskFileInput').value = "";
+    document.getElementById('fileNameLabel').innerText = "Choose a file or drag it here";
+    document.getElementById('fileNameLabel').style.color = "#64748b";
+    
+    // मोडल शो करें
+    if (taskTableModal) {
+        taskTableModal.classList.add('active');
+        taskTableModal.style.display = 'flex'; // डिस्प्ले बैकअप सुरक्षित करने के लिए
+    }
+}
+
+// टेबल वाले मोडल को बंद करने का सुरक्षित फंक्शन
+function closeModal() {
+    if (!taskTableModal) taskTableModal = document.getElementById('taskModal');
+    if (taskTableModal) {
+        taskTableModal.classList.remove('active');
+        taskTableModal.style.display = 'none';
+    }
+}
+
+// फाइल सेलेक्ट होने पर लेबल बदलना
+function updateFileName(input) {
+    const label = document.getElementById('fileNameLabel');
+    if (label) {
+        if (input.files && input.files.length > 0) {
+            label.innerText = `Selected: ${input.files[0].name}`;
+            label.style.color = "#4f46e5";
+        } else {
+            label.innerText = "Choose a file or drag it here";
+            label.style.color = "#64748b";
+        }
+    }
+}
+
+// टेबल मोडल का 'Save & Submit' एक्शन
+function saveTaskData() {
+    const remark = document.getElementById('taskRemarkInput').value.trim();
+    const fileInput = document.getElementById('taskFileInput');
+    const taskName = document.getElementById('modalTaskName').innerText;
+    
+    const hasFile = fileInput && fileInput.files && fileInput.files.length > 0;
+    
+    if(!remark && !hasFile) {
+        alert("कृपया कोई Remark लिखें या File अपलोड करें!");
+        return;
+    }
+    
+    const fileName = hasFile ? fileInput.files[0].name : 'No file uploaded';
+    alert(`🎉 Success! Data saved for "${taskName}"\nRemark: ${remark || 'None'}\nFile: ${fileName}`);
+    
+    closeModal(); // डेटा सेव होने के बाद मोडल बंद
+}
+
+
+// =================================================================
+// 2. SECOND MODAL LOGIC (Workflow Engine Popup)
+// =================================================================
+
+function openWorkflowModal() {
+    if (!workflowPopupModalElement) workflowPopupModalElement = document.getElementById('workflowPopupModal');
+    if (workflowPopupModalElement) workflowPopupModalElement.style.display = 'flex';
+}
+
+function closeWorkflowModal() {
+    if (!workflowPopupModalElement) workflowPopupModalElement = document.getElementById('workflowPopupModal');
+    if (workflowPopupModalElement) workflowPopupModalElement.style.display = 'none';
+}
+
+// डार्क बैकग्राउंड पर बाहर क्लिक करने से मोडल बंद होने का कंबाइंड लॉजिक
+window.onclick = function(event) {
+    if (event.target === taskTableModal) {
+        closeModal();
+    }
+    if (event.target === workflowPopupModalElement) {
+        closeWorkflowModal();
+    }
+};
+
+// ==========================================
+// 3. INTERACTIVE TOAST & WORKFLOW ACTIONS
+// ==========================================
+function showToast(text) {
+    const toast = document.getElementById('toastNotification');
+    if (toast) {
+        document.getElementById('toastText').innerText = text;
+        toast.style.display = 'flex';
+        setTimeout(() => { toast.style.display = 'none'; }, 4000);
+    }
+}
+
+function handleAccept() {
+    const opsBlock = document.getElementById('mainOperationsBlock');
+    if (opsBlock) {
+        opsBlock.style.opacity = '1';
+        opsBlock.style.pointerEvents = 'auto';
+        document.getElementById('acceptRejectZone').style.background = '#f0fdf4';
+        document.getElementById('acceptRejectZone').style.borderColor = '#bbf7d0';
+        document.getElementById('acceptRejectZone').innerHTML = `<span style="color: #16a34a; font-weight: 700; font-size: 14px;"><i class="fa-solid fa-circle-check"></i> Task Accepted Successfully!</span>`;
+        showToast("Task Accepted! Core controls unlocked.");
+    }
+}
+
+function toggleRejectReason() {
+    const block = document.getElementById('rejectReasonBlock');
+    if (block) block.style.display = block.style.display === 'none' ? 'block' : 'none';
+}
+
+function submitRejection() {
+    const reason = document.getElementById('rejectReasonText').value;
+    if(!reason) { alert("Please enter a reason for rejection!"); return; }
+    alert(`Task Rejected. Reason sent to Admin: "${reason}"`);
+    closeWorkflowModal();
+}
+
+function startTask() {
+    showToast("Task State updated to: [IN PROGRESS]");
+    const startBtn = document.getElementById('startBtn');
+    if (startBtn) {
+        startBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Running...`;
+        startBtn.style.background = '#059669';
+    }
+}
+
+function toggleHoldBlock() {
+    const block = document.getElementById('holdBlock');
+    if (block) {
+        block.style.display = block.style.display === 'none' ? 'block' : 'none';
+        document.getElementById('extensionBlock').style.display = 'none';
+    }
+}
+
+function confirmHold() {
+    const reason = document.getElementById('holdReason').value;
+    if(!reason) { alert("Please provide a reason for hold."); return; }
+    showToast("Workflow paused. Sent to Admin.");
+    document.getElementById('holdBlock').style.display = 'none';
+}
+
+function toggleExtensionBlock() {
+    const block = document.getElementById('extensionBlock');
+    if (block) {
+        block.style.display = block.style.display === 'none' ? 'block' : 'none';
+        document.getElementById('holdBlock').style.display = 'none';
+    }
+}
+
+function submitExtension() {
+    const time = document.getElementById('newDeadline').value;
+    const reason = document.getElementById('extReason').value;
+    if(!time || !reason) { alert("Please fill both deadline date and reason."); return; }
+    showToast("Extension Request Submitted!");
+    document.getElementById('extensionBlock').style.display = 'none';
+}
+
+function updateProgressBar() {
+    const val = document.getElementById('progressSelect').value;
+    const bar = document.getElementById('liveProgressBar');
+    if (bar) bar.style.width = val + '%';
+}
+
+function submitWorkAndComplete() {
+    const notes = document.getElementById('completionNotes').value;
+    if(!notes) { alert("Please describe the completed work before final submission."); return; }
+    alert(`🎉 Workflow Submitted Successfully!`);
+    closeWorkflowModal();
+}
+</script>
+</html>

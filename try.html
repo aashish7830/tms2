@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Professional Header with Dropdowns</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- इसे अपने <head> टैग के अंदर पेस्ट करें -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+ 
+   <link rel="stylesheet" href="style.css">
+<style>
+@media (max-width: 991px) {
+    .main-content-split {
+        grid-template-columns: 1fr !important;
+    }
+    .task-detail-sidebar {
+        position: static !important;
+        width: 100% !important;
+    }
+}
+@media (max-width: 600px) {
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+}
+</style>
+
+
+
+</head>
+<body>
+
+    <header class="main-header">
+        
+        <div class="header-left">
+            <div class="custom-menu-container">
+                <button class="custom-menu-btn" id="menuBtn">
+                    <span class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                    <span>Menu</span>
+                </button>
+                
+                <ul class="custom-dropdown" id="dropdownMenu">
+                     <li><a href="index.html"><i class="fa-solid fa-list-check"></i> Dashboard</a></li>
+                    <li><a href="tms.html"><i class="fa-solid fa-list-check"></i> TMS</a></li>
+                    <li><a href="hrms.html"><i class="fa-solid fa-users-gear"></i> HRMS</a></li>
+                    <li><a href="cms.html"><i class="fa-solid fa-folder-open"></i> CMS</a></li>
+                    <li><a href="portfolio-hero.html"><i class="fa-solid fa-chart-pie"></i> Business</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="header-right">
+            
+            <div class="search-container">
+                <input type="text" placeholder="Search..." class="search-input">
+            </div>
+
+            <div class="notification-wrapper">
+                <div class="notification-container" id="notiToggle">
+                    <i class="fa-regular fa-bell bell-icon"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="noti-header">
+                        <h3>Notifications</h3>
+                        <a href="#mark-read" class="mark-all-btn">Mark all as read</a>
+                    </div>
+                    <ul class="noti-list">
+                        <li class="noti-item unread">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" class="noti-avatar" alt="User">
+                            <div class="noti-content">
+                                <span class="noti-text"><strong>Riya Sen</strong> assigned you a task in <strong>HRMS</strong>.</span>
+                                <span class="noti-time">3 mins ago</span>
+                            </div>
+                        </li>
+                        <li class="noti-item unread">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100" class="noti-avatar" alt="User">
+                            <div class="noti-content">
+                                <span class="noti-text"><strong>Rahul Dev</strong> requested approval for <strong>Business</strong> budget.</span>
+                                <span class="noti-time">1 hour ago</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="noti-footer">
+                        <a href="#all-notifications">View all notifications</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vertical-divider"></div>
+
+            <div class="user-profile-wrapper">
+                <div class="user-profile" id="profileToggle">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" alt="Amit Sharma" class="profile-img">
+                    <div class="user-details">
+                        <span class="user-name">Amit Sharma</span>
+                        <span class="user-role">Workspace Master</span>
+                    </div>
+                    <i class="fa-solid fa-caret-down dropdown-arrow"></i>
+                </div>
+
+                <div class="profile-dropdown-menu" id="profileDropdown">
+                    <div class="dropdown-heading">Account Management</div>
+                    <ul>
+                        <li><a href="#profile"><i class="fa-regular fa-user"></i> My Profile</a></li>
+                        <li><a href="#settings"><i class="fa-solid fa-gear"></i> Account Settings</a></li>
+                        <li><a href="#security"><i class="fa-regular fa-shield-halved"></i> Security Status</a></li>
+                        <div class="dropdown-divider"></div>
+                        <li><a href="#logout" class="logout-link"><i class="fa-solid fa-right-from-bracket"></i> Logout Account</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </header>
+ 
+
+
+
+<!-- Main Dashboard Container (Header के नीचे रखें) -->
+<div class="dashboard-wrapper" style="min-height: 100vh; background: #f4f6f9; padding: 25px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; box-sizing: border-box;">
+    
+    <!-- SECTION 1: TOP METRIC CARDS (Feature 1 & 13) -->
+    <div class="metrics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px;">
+        <!-- Card 1: Total Tasks -->
+        <div class="metric-card" style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; align-items: center; justify-content: space-between;">
+            <div>
+                <p style="margin: 0; font-size: 13px; color: #777; font-weight: 600; text-transform: uppercase;">Total Tasks</p>
+                <h3 style="margin: 5px 0 0 0; font-size: 24px; color: #2b2d42;">42</h3>
+            </div>
+            <div style="background: #eef2ff; color: #4f46e5; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;"><i class="fa-solid fa-folder-tree"></i></div>
+        </div>
+
+        <!-- Card 2: Pending Tasks -->
+        <div class="metric-card" style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; align-items: center; justify-content: space-between;">
+            <div>
+                <p style="margin: 0; font-size: 13px; color: #777; font-weight: 600; text-transform: uppercase;">Pending</p>
+                <h3 style="margin: 5px 0 0 0; font-size: 24px; color: #d97706;">12</h3>
+            </div>
+            <div style="background: #fffbeb; color: #d97706; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;"><i class="fa-solid fa-clock"></i></div>
+        </div>
+
+        <!-- Card 3: Completed Tasks -->
+        <div class="metric-card" style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; align-items: center; justify-content: space-between;">
+            <div>
+                <p style="margin: 0; font-size: 13px; color: #777; font-weight: 600; text-transform: uppercase;">Completed</p>
+                <h3 style="margin: 5px 0 0 0; font-size: 24px; color: #16a34a;">25</h3>
+            </div>
+            <div style="background: #f0fdf4; color: #16a34a; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;"><i class="fa-solid fa-circle-check"></i></div>
+        </div>
+
+        <!-- Card 4: Urgent Tasks -->
+        <div class="metric-card" style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; align-items: center; justify-content: space-between;">
+            <div>
+                <p style="margin: 0; font-size: 13px; color: #777; font-weight: 600; text-transform: uppercase;">Urgent</p>
+                <h3 style="margin: 5px 0 0 0; font-size: 24px; color: #dc2626;">03</h3>
+            </div>
+            <div style="background: #fef2f2; color: #dc2626; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        </div>
+
+        <!-- Card 5: Overdue -->
+        <div class="metric-card" style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; align-items: center; justify-content: space-between;">
+            <div>
+                <p style="margin: 0; font-size: 13px; color: #777; font-weight: 600; text-transform: uppercase;">Overdue</p>
+                <h3 style="margin: 5px 0 0 0; font-size: 24px; color: #7c3aed;">02</h3>
+            </div>
+            <div style="background: #f5f3ff; color: #7c3aed; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;"><i class="fa-solid fa-hourglass-alerts"></i></div>
+        </div>
+
+        <!-- Card 6: Today's Tasks -->
+        <div class="metric-card" style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; align-items: center; justify-content: space-between;">
+            <div>
+                <p style="margin: 0; font-size: 13px; color: #777; font-weight: 600; text-transform: uppercase;">Today's</p>
+                <h3 style="margin: 5px 0 0 0; font-size: 24px; color: #2563eb;">05</h3>
+            </div>
+            <div style="background: #eff6ff; color: #2563eb; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;"><i class="fa-solid fa-calendar-day"></i></div>
+        </div>
+    </div>
+
+
+    <!-- SECTION 2: FILTERS & SEARCH BAR (Feature 11 & 12) -->
+    <div class="filter-bar" style="background: white; border-radius: 12px; padding: 15px; display: flex; flex-wrap: wrap; gap: 15px; align-items: center; justify-content: space-between; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; flex-grow: 1;">
+            <!-- Search -->
+            <div style="position: relative; min-width: 250px; flex-grow: 1;">
+                <i class="fa fa-search" style="position: absolute; left: 12px; top: 12px; color: #aaa;"></i>
+                <input type="search" placeholder="Search task by title, id or owner..." style="width: 100%; padding: 8px 12px 8px 35px; border: 1px solid #ddd; border-radius: 8px; outline: none; font-size: 14px; box-sizing: border-box;">
+            </div>
+            <!-- Quick Dropdown Filters -->
+            <select style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; color: #555; background: #fff;">
+                <option value="">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="progress">In Progress</option>
+                <option value="hold">On Hold</option>
+                <option value="completed">Completed</option>
+            </select>
+            <select style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; color: #555; background: #fff;">
+                <option value="">Priority (All)</option>
+                <option value="urgent">Urgent (Red)</option>
+                <option value="medium">Medium (Yellow)</option>
+                <option value="normal">Normal (Green)</option>
+            </select>
+            <select style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; color: #555; background: #fff;">
+                <option value="">Department</option>
+                <option value="it">IT Operations</option>
+                <option value="hr">HR & Admin</option>
+                <option value="finance">Finance Audit</option>
+            </select>
+            <input type="date" style="padding: 7px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; color: #555;">
+        </div>
+        
+        <!-- Toggle Layout / Advanced Views -->
+        <div style="display: flex; gap: 5px;">
+            <button class="btn-toggle active" style="padding: 8px 12px; background: #4f46e5; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px;"><i class="fa-solid fa-list"></i> List</button>
+            <button class="btn-toggle" style="padding: 8px 12px; background: #e0e7ff; color: #4f46e5; border: none; border-radius: 6px; cursor: pointer; font-size: 13px;"><i class="fa-solid fa-calendar-days"></i> Calendar</button>
+        </div>
+    </div>
+
+
+    <!-- SECTION 3: SPLIT MAIN VIEW (Task List & Details Sidebar) -->
+    <div class="main-content-split" style="display: grid; grid-template-columns: 2fr 1.2fr; gap: 25px; align-items: start;">
+        
+        <!-- LEFT PART: 2. Task List Page (Feature 2, 3, 10) -->
+        <div class="task-list-container" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); overflow-x: auto;">
+            <h4 style="margin: 0 0 15px 0; color: #2b2d42; font-size: 16px;">Assigned Workflow Tasks</h4>
+            
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #edf2f7; color: #718096; font-weight: 600;">
+                        <th style="padding: 12px 10px;">Task Name</th>
+                        <th style="padding: 12px 10px;">Priority</th>
+                        <th style="padding: 12px 10px;">Due Time</th>
+                        <th style="padding: 12px 10px;">Status</th>
+                        <th style="padding: 12px 10px;">Approval</th>
+                        <th style="padding: 12px 10px; text-align: center;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Row 1: Urgent & Custom workflows -->
+                    <tr style="border-bottom: 1px solid #edf2f7; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                        <td style="padding: 14px 10px; font-weight: 600; color: #1e293b;">
+                            Daily Production Server Backup
+                            <span style="display: block; font-size: 11px; color: #94a3b8; font-weight: normal; margin-top: 3px;"><i class="fa-solid fa-arrows-rotate"></i> Daily Repeating</span>
+                        </td>
+                        <td style="padding: 14px 10px;">
+                            <span style="background: #fef2f2; color: #dc2626; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; border: 1px solid #fca5a5;">Urgent</span>
+                        </td>
+                        <td style="padding: 14px 10px; color: #475569; font-weight: 500;">Today, 05:00 PM</td>
+                        <td style="padding: 14px 10px;">
+                            <select style="padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; background: #fffbeb; color: #d97706; border: 1px solid #fde68a;">
+                                <option value="pending" selected>Pending</option>
+                                <option value="progress">In Progress</option>
+                                <option value="hold">On Hold</option>
+                                <option value="completed">Completed</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="verified">Verified</option>
+                            </select>
+                        </td>
+                        <td style="padding: 14px 10px;"><span style="background: #f5f3ff; color: #7c3aed; font-size: 11px; font-weight: bold; padding: 3px 6px; border-radius: 4px;">Pending Approval</span></td>
+                        <td style="padding: 14px 10px; text-align: center;">
+<button class="open-task-btn" style="background: #4f46e5; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;">
+    <i class="fa-regular fa-folder-open"></i> Open
+</button>                        </td>
+                    </tr>
+
+                    <!-- Row 2: Medium/Normal Process -->
+                    <tr style="border-bottom: 1px solid #edf2f7; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                        <td style="padding: 14px 10px; font-weight: 600; color: #1e293b;">
+                            Q2 Voucher Financial Audit
+                            <span style="display: block; font-size: 11px; color: #94a3b8; font-weight: normal; margin-top: 3px;"><i class="fa-solid fa-arrows-rotate"></i> Monthly Audit</span>
+                        </td>
+                        <td style="padding: 14px 10px;">
+                            <span style="background: #fffbeb; color: #d97706; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; border: 1px solid #fde68a;">Medium</span>
+                        </td>
+                        <td style="padding: 14px 10px; color: #475569;">29 May, 02:00 PM</td>
+                        <td style="padding: 14px 10px;">
+                            <select style="padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe;">
+                                <option value="pending">Pending</option>
+                                <option value="progress" selected>In Progress</option>
+                                <option value="hold">On Hold</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </td>
+                        <td style="padding: 14px 10px;"><span style="color: #64748b; font-size: 12px;">Not Required</span></td>
+                        <td style="padding: 14px 10px; text-align: center;">
+                            <button style="background: #4f46e5; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;"><i class="fa-regular fa-folder-open"></i> Open</button>
+                        </td>
+                    </tr>
+
+                    <!-- Row 3: Verified / Normal -->
+                    <tr style="border-bottom: 1px solid #edf2f7; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                        <td style="padding: 14px 10px; font-weight: 600; color: #1e293b;">
+                            Employee Attendance Synchronization
+                            <span style="display: block; font-size: 11px; color: #94a3b8; font-weight: normal; margin-top: 3px;"><i class="fa-solid fa-arrows-rotate"></i> Weekly Sync</span>
+                        </td>
+                        <td style="padding: 14px 10px;">
+                            <span style="background: #f0fdf4; color: #16a34a; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; border: 1px solid #bbf7d0;">Normal</span>
+                        </td>
+                        <td style="padding: 14px 10px; color: #475569;">25 May, 11:00 AM</td>
+                        <td style="padding: 14px 10px;">
+                            <select style="padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0;">
+                                <option value="verified" selected>Verified</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </td>
+                        <td style="padding: 14px 10px;"><span style="background: #dcfce7; color: #15803d; font-size: 11px; font-weight: bold; padding: 3px 6px; border-radius: 4px;">Approved & Clear</span></td>
+                        <td style="padding: 14px 10px; text-align: center;">
+                            <button style="background: #4f46e5; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;"><i class="fa-regular fa-folder-open"></i> Open</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <!-- RIGHT PART: 4, 5, 6 & 7. Task Details Panel + Actions + Timeline + Chat -->
+        <div class="task-detail-sidebar" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 20px;">
+            
+            <!-- Feature 4: Title & Meta Info -->
+            <div style="border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="background: #fef2f2; color: #dc2626; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;">TASK ID: #TSK-9082</span>
+                    <span style="font-size: 12px; color: #64748b;"><i class="fa-solid fa-clock-three"></i> <strong>Freq:</strong> Daily Report</span>
+                </div>
+                <h3 style="margin: 0 0 10px 0; font-size: 18px; color: #1e293b;">Daily Production Server Backup</h3>
+                <p style="margin: 0; font-size: 13px; color: #64748b; line-height: 1.5;">
+                    Ensure full structural SQL dumps and active asset directories are zipped, encrypted, and pushed to the AWS S3 recovery vault bucket.
+                </p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; font-size: 12px; background: #f8fafc; padding: 10px; border-radius: 8px;">
+                    <div><strong>Assigned By:</strong> Admin (IT Head)</div>
+                    <div><strong>Due Date/Time:</strong> Today, 5:00 PM</div>
+                    <div><strong>Verification Reqd:</strong> <span style="color:#16a34a; font-weight:bold;">Yes (Security Team)</span></div>
+                    <div><strong>Approval Reqd:</strong> <span style="color:#7c3aed; font-weight:bold;">Yes (CIO Desk)</span></div>
+                </div>
+            </div>
+
+            <!-- Feature 7: Task Timeline -->
+            <div>
+                <h5 style="margin: 0 0 12px 0; color: #475569; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Workflow Progress Timeline</h5>
+                <div style="display: flex; justify-content: space-between; position: relative; padding: 0 10px;">
+                    <!-- Line Background -->
+                    <div style="position: absolute; top: 12px; left: 15px; right: 15px; height: 3px; background: #e2e8f0; z-index: 1;"></div>
+                    <!-- Completed Line Progress -->
+                    <div style="position: absolute; top: 12px; left: 15px; width: 33%; height: 3px; background: #22c55e; z-index: 2;"></div>
+                    
+                    <!-- Nodes -->
+                    <div style="position: relative; z-index: 3; text-align: center; font-size: 11px;">
+                        <div style="width: 24px; height: 24px; border-radius: 50%; background: #22c55e; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px auto; font-size: 10px;"><i class="fa fa-check"></i></div>
+                        <span style="color: #22c55e; font-weight: 600;">Assigned</span>
+                    </div>
+                    <div style="position: relative; z-index: 3; text-align: center; font-size: 11px;">
+                        <div style="width: 24px; height: 24px; border-radius: 50%; background: #22c55e; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px auto; font-size: 10px;"><i class="fa fa-spinner fa-spin"></i></div>
+                        <span style="color: #22c55e; font-weight: 600;">Started</span>
+                    </div>
+                    <div style="position: relative; z-index: 3; text-align: center; font-size: 11px;">
+                        <div style="width: 24px; height: 24px; border-radius: 50%; background: #e2e8f0; color: #94a3b8; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px auto; font-size: 10px;">3</div>
+                        <span style="color: #64748b;">Submitted</span>
+                    </div>
+                    <div style="position: relative; z-index: 3; text-align: center; font-size: 11px;">
+                        <div style="width: 24px; height: 24px; border-radius: 50%; background: #e2e8f0; color: #94a3b8; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px auto; font-size: 10px;"><i class="fa-solid fa-lock"></i></div>
+                        <span style="color: #64748b;">Approved</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 5 & 6: Action Panel & Proof / Work Submission -->
+            <div style="background: #fafafa; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 15px;">
+                <h5 style="margin: 0 0 10px 0; color: #1e293b; font-size: 13px;">Execution Actions & Submission Proof</h5>
+                
+                <!-- Operational Control Buttons -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                    <button style="background: #2563eb; color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: 0.2s;"><i class="fa-solid fa-play"></i> Start Task</button>
+                    <button style="background: #16a34a; color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: 0.2s;"><i class="fa-solid fa-check-double"></i> Complete Task</button>
+                </div>
+
+                <!-- File attachments uploads -->
+                <div style="margin-bottom: 10px;">
+                    <label style="display:block; font-size: 11px; font-weight: 600; color: #64748b; margin-bottom: 4px;">Upload Work Artifacts (PDF, Image, Docs):</label>
+                    <input type="file" multiple style="width: 100%; font-size: 12px; color: #475569; background: #fff; padding: 5px; border: 1px solid #e2e8f0; border-radius: 6px;">
+                </div>
+                
+                <!-- Text Notes / Submission logs -->
+                <div>
+                    <label style="display:block; font-size: 11px; font-weight: 600; color: #64748b; margin-bottom: 4px;">Closure / Text Notes:</label>
+                    <textarea placeholder="Example: Navigation issue fixed and tested successfully..." style="width: 100%; height: 50px; padding: 6px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px; outline: none; resize: none; box-sizing: border-box;"></textarea>
+                </div>
+            </div>
+
+            <!-- Feature 17: Chat / Discussion Log -->
+            <div style="border-top: 1px solid #f1f5f9; padding-top: 15px;">
+                <h5 style="margin: 0 0 10px 0; color: #475569; font-size: 13px;"><i class="fa-regular fa-comments"></i> Contextual Discussion</h5>
+                
+                <!-- Message Thread Container -->
+                <div style="display: flex; flex-direction: column; gap: 8px; max-height: 120px; overflow-y: auto; margin-bottom: 10px; padding-right: 5px;">
+                    <!-- Admin msg -->
+                    <div style="background: #f1f5f9; padding: 8px 10px; border-radius: 8px; font-size: 12px; width: fit-content; max-width: 85%;">
+                        <strong style="color: #4f46e5; display:block; font-size: 10px;">Admin (IT Head)</strong>
+                        Please complete before 5 PM.
+                    </div>
+                    <!-- User msg -->
+                    <div style="background: #eff6ff; padding: 8px 10px; border-radius: 8px; font-size: 12px; width: fit-content; max-width: 85%; align-self: flex-end;">
+                        <strong style="color: #2563eb; display:block; font-size: 10px;">You (Aashish)</strong>
+                        Working on it, logs are generated.
+                    </div>
+                </div>
+                
+                <!-- Send Comment Form element -->
+                <div style="display: flex; gap: 5px;">
+                    <input type="text" placeholder="Type clarification note..." style="flex-grow: 1; padding: 6px 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px; outline: none;">
+                    <button style="background: #4f46e5; color: white; border: none; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-paper-plane" style="font-size:11px;"></i></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Extra Mobile Responsive Media Rules (Custom Global Injection) -->
+
+
+
+
+
+
+<script src="script.js"></script>
+
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // 1. SELECTING INTERACTIVE ELEMENTS
+    const startBtn = document.querySelector("button:contains-clear, button:has(.fa-play)") || document.querySelectorAll('.task-detail-sidebar button')[0];
+    const completeBtn = document.querySelector("button:has(.fa-check-double)") || document.querySelectorAll('.task-detail-sidebar button')[1];
+    const timelineNodes = document.querySelectorAll('.task-detail-sidebar div[style*="z-index: 3"]');
+    const progressLine = document.querySelector('.task-detail-sidebar div[style*="background: #22c55e; z-index: 2"]');
+    const statusSelect = document.querySelector('table tbody tr select'); // First row select for testing
+
+    // Helper text matching since standard selector might vary
+    function getButtonByText(text) {
+        return Array.from(document.querySelectorAll('button')).find(el => el.textContent.includes(text));
+    }
+
+    const liveStartBtn = getButtonByText('Start Task');
+    const liveCompleteBtn = getButtonByText('Complete Task');
+
+    // 2. START TASK BUTTON CLICK LOGIC
+    if (liveStartBtn) {
+        liveStartBtn.addEventListener("click", function () {
+            alert("Task status updated to 'In Progress'!");
+            // Update Select box in the table row
+            if (statusSelect) {
+                statusSelect.value = "progress";
+                statusSelect.style.background = "#eff6ff";
+                statusSelect.style.color = "#2563eb";
+                statusSelect.style.borderColor = "#bfdbfe";
+            }
+            // Update Timeline Node Visuals
+            if (progressLine) progressLine.style.width = "33%"; 
+            this.style.opacity = "0.6";
+            this.disabled = true;
+            this.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> In Progress`;
+        });
+    }
+
+    // 3. COMPLETE TASK BUTTON CLICK LOGIC
+    if (liveCompleteBtn) {
+        liveCompleteBtn.addEventListener("click", function () {
+            const fileInput = document.querySelector('input[type="file"]');
+            const noteArea = document.querySelector('.task-detail-sidebar textarea');
+
+            // Verification Check: User must submit proof
+            if (fileInput && fileInput.files.length === 0 && noteArea && noteArea.value.trim() === "") {
+                alert("Please upload a file or write a closure note as proof before completing the task!");
+                noteArea.style.borderColor = "#dc2626";
+                return;
+            }
+
+            alert("Work submitted! Status changed to 'Pending Approval'.");
+            noteArea.style.borderColor = "#e2e8f0";
+            
+            if (statusSelect) {
+                statusSelect.value = "completed";
+                statusSelect.style.background = "#f0fdf4";
+                statusSelect.style.color = "#16a34a";
+            }
+
+            // Move timeline arrow to 'Submitted' stage
+            if (progressLine) progressLine.style.width = "66%";
+            
+            // Highlight the Submitted node
+            if (timelineNodes[2]) {
+                const nodeCircle = timelineNodes[2].querySelector('div');
+                nodeCircle.style.background = "#22c55e";
+                nodeCircle.style.color = "white";
+                nodeCircle.innerHTML = `<i class="fa fa-check"></i>`;
+                timelineNodes[2].querySelector('span').style.color = "#22c55e";
+                timelineNodes[2].querySelector('span').style.fontWeight = "600";
+            }
+        });
+    }
+
+    // 4. CHAT / DISCUSSION LOGIC (Real-time append feeling)
+    const chatInput = document.querySelector('.task-detail-sidebar input[placeholder*="clarification"]');
+    const chatSendBtn = document.querySelector('.task-detail-sidebar button:has(.fa-paper-plane)');
+    const chatContainer = document.querySelector('.task-detail-sidebar div[style*="max-height: 120px"]');
+
+    if (chatSendBtn && chatInput) {
+        function sendChatMessage() {
+            const msgText = chatInput.value.trim();
+            if (msgText === "") return;
+
+            const newMsg = document.createElement('div');
+            newMsg.style.cssText = "background: #eff6ff; padding: 8px 10px; border-radius: 8px; font-size: 12px; width: fit-content; max-width: 85%; align-self: flex-end;";
+            newMsg.innerHTML = `<strong style="color: #2563eb; display:block; font-size: 10px;">You (Aashish)</strong> ${msgText}`;
+            
+            chatContainer.appendChild(newMsg);
+            chatInput.value = "";
+            
+            // Auto scroll chat to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        chatSendBtn.addEventListener("click", sendChatMessage);
+        chatInput.addEventListener("keypress", function (e) {
+            if (e.key === 'Enter') sendChatMessage();
+        });
+    }
+
+    // 5. TABLE ROW 'OPEN' BUTTON SYSTEM
+    const openButtons = document.querySelectorAll('table tbody button');
+    openButtons.forEach(btn => {
+        btn.addEventListener("click", function () {
+            const row = this.closest('tr');
+            const taskName = row.cells[0].textContent.split('\n')[1].trim();
+            
+            // Dynamically push left table data into right sidebar detail
+            document.querySelector('.task-detail-sidebar h3').textContent = taskName;
+            alert(`Loading complete workflow metrics for: ${taskName}`);
+        });
+    });
+});
+</script>
+
+
+<script>
+    // पुराना Open Button वाला हिस्सा हटाकर इसे पेस्ट करें:
+const openButtons = document.querySelectorAll('.open-task-btn');
+
+openButtons.forEach(btn => {
+    btn.addEventListener("click", function (e) {
+        e.preventDefault(); // किसी भी डिफ़ॉल्ट बिहेवियर को रोकने के लिए
+        
+        // 1. जिस रो (Row) पर क्लिक हुआ है, उसे ढूँढना
+        const row = this.closest('tr');
+        
+        if (row) {
+            // 2. रो के अंदर से टास्क का नाम निकालना
+            // cells[0] का मतलब पहला कॉलम (Task Name)
+            const fullText = row.cells[0].innerText || row.cells[0].textContent;
+            
+            // एक्स्ट्रा स्पेस और नीचे लिखे 'Daily Repeating' टेक्स्ट को साफ़ करके सिर्फ नाम निकालना
+            const taskName = fullText.split('\n')[0].trim();
+            
+            // 3. राइट साइडबार के टाइटल को लाइव अपडेट करना
+            const sidebarTitle = document.querySelector('.task-detail-sidebar h3');
+            if (sidebarTitle) {
+                sidebarTitle.textContent = taskName;
+            }
+            
+            // 4. यूजर को फीडबैक देना (इसे आप बाद में हटा भी सकते हैं)
+            alert(`Loading complete workflow metrics for: ${taskName}`);
+            
+            // 5. मोबाइल रिस्पॉन्सिविटी के लिए: अगर स्क्रीन छोटी है, तो स्क्रॉल करके सीधा डिटेल्स पर ले जाओ
+            if (window.innerWidth <= 991) {
+                document.querySelector('.task-detail-sidebar').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    });
+});
+</script>
+</html>
