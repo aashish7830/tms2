@@ -3,267 +3,358 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & Register with OTP & Google</title>
+    <title>Registered Businesses Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 350px; text-align: center; }
-        h2 { margin-bottom: 20px; color: #333; }
-        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        button:hover { background: #0056b3; }
-        .google-btn { background: #db4437; margin-top: 15px; }
-        .google-btn:hover { background: #c13527; }
-        .toggle-link { margin-top: 15px; display: block; color: #007bff; cursor: pointer; font-size: 14px; }
-        .hidden { display: none; }
+        /* --- TABLE LAYOUT CUSTOM CSS --- */
+        .business-display-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 24px;
+            padding: 24px;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .businesses-grid-section {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .section-title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .section-title-bar h2 {
+            font-size: 18px;
+            color: #0f172a;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .count-badge {
+            background-color: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* Table Container for Responsiveness */
+        .table-responsive-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        /* Modern Modern Table Styling */
+        .biz-data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .biz-data-table th {
+            background-color: #f1f5f9;
+            color: #475569;
+            font-weight: 600;
+            padding: 14px 16px;
+            border-bottom: 2px solid #e2e8f0;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .biz-data-table td {
+            padding: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #334155;
+            vertical-align: middle;
+        }
+
+        .biz-data-table tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        /* Business Main Info styling */
+        .biz-name-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .biz-title {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 14px;
+        }
+
+        .biz-subtitle {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* Numeric Badges inside table */
+        .count-indicator {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f1f5f9;
+            color: #334155;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            font-size: 13px;
+        }
+
+        /* Location cell icon */
+        .location-text {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #334155;
+        }
+        .location-text i {
+            color: #94a3b8;
+        }
+
+        /* Action Manage Button */
+        .btn-manage-action {
+            background-color: #ffffff;
+            color: #2563eb;
+            border: 1px solid #bfdbfe;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-manage-action:hover {
+            background-color: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        }
+
+        /* --- SIDE CARD STATS (Unchanged Structure, Just cleaner) --- */
+        .stats-side-card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            height: fit-content;
+        }
+
+        .card-header-simple h2 {
+            font-size: 16px;
+            color: #0f172a;
+            margin: 0 0 16px 0;
+            font-weight: 600;
+        }
+
+        .mini-stat-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .stat-num {
+            display: block;
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .efficiency-container {
+            margin-top: 16px;
+        }
+
+        .efficiency-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        .pct-text {
+            font-weight: 600;
+            color: #2563eb;
+        }
+
+        .bar-bg {
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            background: #2563eb;
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        /* Responsive Breakpoint */
+        @media (max-width: 992px) {
+            .business-display-layout {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- LOGIN FORM -->
-    <div id="login-box">
-        <h2>Login</h2>
-        <input type="email" id="login-email" placeholder="Email Address" required>
-        <input type="password" id="login-password" placeholder="Password" required>
-        <button onclick="handleLogin()">Login</button>
-        <button class="google-btn" onclick="loginWithGoogle()">Sign in with Google</button>
-        <span class="toggle-link" onclick="toggleForm('register')">Naya account banayein (Register)</span>
-    </div>
+    <main class="business-display-layout">
+        
+        <div class="businesses-grid-section">
+            <div class="section-title-bar">
+                <h2>Registered Businesses</h2>
+                <span class="count-badge">3 Active Units</span>
+            </div>
 
-    <!-- REGISTRATION FORM -->
-    <div id="register-box" class="hidden">
-        <h2>Register</h2>
-        <input type="text" id="reg-name" placeholder="Full Name" required>
-        <input type="email" id="reg-email" placeholder="Email Address" required>
-        <input type="password" id="reg-password" placeholder="Password" required>
-        <button onclick="handleRegister()">OTP Bhejein</button>
-        <span class="toggle-link" onclick="toggleForm('login')">Pehle se account hai? Login karein</span>
-    </div>
+            <div class="table-responsive-wrapper">
+                <table class="biz-data-table">
+                    <thead>
+                        <tr>
+                            <th>Business Name</th>
+                            <th>Total Branch</th>
+                            <th>Total Staff</th>
+                            <th>Corporate Location</th>
+                            <th style="text-align: right;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="biz-name-cell">
+                                    <span class="biz-title">TwoDots Films & Tech</span>
+                                    <span class="biz-subtitle">Tech & SaaS / Media</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="count-indicator">04</span>
+                            </td>
+                            <td>
+                                <span class="count-indicator">32</span>
+                            </td>
+                            <td>
+                                <div class="location-text">
+                                    <i class="fa-solid fa-location-dot"></i> Noida, Sec 62
+                                </div>
+                            </td>
+                            <td style="text-align: right;">
+                                <button class="btn-manage-action">
+                                    Manage <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </td>
+                        </tr>
 
-    <!-- OTP VERIFICATION FORM -->
-    <div id="otp-box" class="hidden">
-        <h2>OTP Verification</h2>
-        <p>Aapke email par OTP bheja gaya hai.</p>
-        <input type="text" id="otp-input" placeholder="Enter 6-Digit OTP" maxlength="6" required>
-        <button onclick="verifyOTP()">Verify & Register</button>
-        <span class="toggle-link" onclick="toggleForm('register')">Wapas jayein</span>
-    </div>
-</div>
+                        <tr>
+                            <td>
+                                <div class="biz-name-cell">
+                                    <span class="biz-title">Apex Logistics Group</span>
+                                    <span class="biz-subtitle">Logistics & Supply Chain</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="count-indicator">02</span>
+                            </td>
+                            <td>
+                                <span class="count-indicator">18</span>
+                            </td>
+                            <td>
+                                <div class="location-text">
+                                    <i class="fa-solid fa-location-dot"></i> New Delhi
+                                </div>
+                            </td>
+                            <td style="text-align: right;">
+                                <button class="btn-manage-action">
+                                    Manage <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </td>
+                        </tr>
 
-<!-- Firebase SDKs (Google Login Ke Liye) -->
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+                        <tr>
+                            <td>
+                                <div class="biz-name-cell">
+                                    <span class="biz-title">JNRS Hotels & Resorts</span>
+                                    <span class="biz-subtitle">Hospitality & Luxury</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="count-indicator">05</span>
+                            </td>
+                            <td>
+                                <span class="count-indicator">45</span>
+                            </td>
+                            <td>
+                                <div class="location-text">
+                                    <i class="fa-solid fa-location-dot"></i> Mumbai
+                                </div>
+                            </td>
+                            <td style="text-align: right;">
+                                <button class="btn-manage-action">
+                                    Manage <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-<script>
-    // Firebase Configuration (Apne Firebase Console se badlein)
-    const firebaseConfig = {
-        apiKey: "YOUR_FIREBASE_API_KEY",
-        authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_STORAGE_BUCKET",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
-    };
-    
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const provider = new firebase.auth.GoogleAuthProvider();
+        <div class="stats-side-card">
+            <div class="card-header-simple">
+                <h2>Portfolio Efficiency</h2>
+            </div>
+            <div class="stats-visual-area">
+                <div class="mini-stat-box">
+                    <span class="stat-num">03</span>
+                    <span class="stat-label">Total Units</span>
+                </div>
+                <div class="mini-stat-box">
+                    <span class="stat-num">94%</span>
+                    <span class="stat-label">Uptime Rate</span>
+                </div>
+            </div>
+            <div class="efficiency-container">
+                <div class="efficiency-labels">
+                    <span>Overall Growth Index</span>
+                    <span class="pct-text">75%</span>
+                </div>
+                <div class="bar-bg">
+                    <div class="bar-fill" style="width: 75%;"></div>
+                </div>
+            </div>
+        </div>
 
-    // UI Toggle Function
-    function toggleForm(form) {
-        document.getElementById('login-box').classList.add('hidden');
-        document.getElementById('register-box').classList.add('hidden');
-        document.getElementById('otp-box').classList.add('hidden');
+    </main>
 
-        if(form === 'login') document.getElementById('login-box').classList.remove('hidden');
-        if(form === 'register') document.getElementById('register-box').classList.remove('hidden');
-        if(form === 'otp') document.getElementById('otp-box').classList.remove('hidden');
-    }
-
-    // 1. Google Login
-    function loginWithGoogle() {
-        firebase.auth().signInWithPopup(provider)
-        .then((result) => {
-            alert("Google Login Successful! Welcome " + result.user.displayName);
-            // Yahan se aap user ko dashboard par bhej sakte hain
-        }).catch((error) => {
-            alert("Google Login Failed: " + error.message);
-        });
-    }
-
-    // Backend API URL
-    const BACKEND_URL = "http://localhost:5000/api";
-    let temporaryEmail = "";
-
-    // 2. Normal Register (OTP Request)
-    async function handleRegister() {
-        const name = document.getElementById('reg-name').value;
-        const email = document.getElementById('reg-email').value;
-        const password = document.getElementById('reg-password').value;
-
-        if(!name || !email || !password) return alert("Sari details bharein!");
-
-        temporaryEmail = email; // OTP verify karne ke liye email save kar rhe hain
-
-        const response = await fetch(`${BACKEND_URL}/send-otp`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, password })
-        });
-
-        const data = await response.json();
-        if(response.ok) {
-            alert(data.message);
-            toggleForm('otp');
-        } else {
-            alert(data.message);
-        }
-    }
-
-    // 3. OTP Verify karne ke liye
-    async function verifyOTP() {
-        const otp = document.getElementById('otp-input').value;
-
-        const response = await fetch(`${BACKEND_URL}/verify-otp`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: temporaryEmail, otp })
-        });
-
-        const data = await response.json();
-        if(response.ok) {
-            alert("Registration Successful! Ab aap login kar sakte hain.");
-            toggleForm('login');
-        } else {
-            alert(data.message);
-        }
-    }
-
-    // 4. Normal Login
-    async function handleLogin() {
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
-
-        const response = await fetch(`${BACKEND_URL}/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        });
-
-        const data = await response.json();
-        if(response.ok) {
-            alert("Login Successful! Token: " + data.token);
-        } else {
-            alert(data.message);
-        }
-    }
-</script>
 </body>
-<script>
-    const express = require('express');
-const cors = require('cors');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
-
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-// Dummy Database (Real app me MongoDB/MySQL use karein)
-let usersDB = [];
-let tempOTPStore = {}; // Temporary OTP store karne ke liye
-
-const JWT_SECRET = "aapka_super_secret_key";
-
-// Email Transporter (Nodemailer setup)
-// Note: Isme aapko apni Email aur App Password dalna hoga
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'YOUR_EMAIL@gmail.com', 
-        pass: 'YOUR_GMAIL_APP_PASSWORD' // Google Account -> Security -> App Passwords
-    }
-});
-
-// 1. ROUTE: Send OTP (Registration Step 1)
-app.post('/api/send-otp', async (req, res) => {
-    const { name, email, password } = req.body;
-
-    // Check agar user pehle se hai
-    const userExists = usersDB.find(u => u.email === email);
-    if (userExists) return res.status(400).json({ message: "Email pehle se registered hai!" });
-
-    // 6-digit OTP generate karein
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Temp store data jab tak OTP verify nahi hota
-    tempOTPStore[email] = { name, email, password: hashedPassword, otp };
-
-    // Email bhejna
-    const mailOptions = {
-        from: 'YOUR_EMAIL@gmail.com',
-        to: email,
-        subject: 'Aapka Registration OTP',
-        text: `Hello ${name}, aapka verification OTP hai: ${otp}`
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error);
-            return res.status(500).json({ message: "Email bhejne me dikkat aayi!" });
-        }
-        res.status(200).json({ message: "OTP aapke email par bhej diya gaya hai!" });
-    });
-});
-
-// 2. ROUTE: Verify OTP & Save User (Registration Step 2)
-app.post('/api/verify-otp', (req, res) => {
-    const { email, otp } = req.body;
-
-    const tempUser = tempOTPStore[email];
-
-    if (!tempUser) {
-        return res.status(400).json({ message: "Koyi data nahi mila. Fir se try karein." });
-    }
-
-    if (tempUser.otp === otp) {
-        // OTP sahi hai, ab user ko main DB me save karein
-        usersDB.push({
-            name: tempUser.name,
-            email: tempUser.email,
-            password: tempUser.password
-        });
-
-        // Temp store se delete karein
-        delete tempOTPStore[email];
-
-        return res.status(200).json({ message: "Registration successful!" });
-    } else {
-        return res.status(400).json({ message: "Galat OTP! Fir se check karein." });
-    }
-});
-
-// 3. ROUTE: Normal Login
-app.post('/api/login', async (req, res) => {
-    const { email, password } = req.body;
-
-    const user = usersDB.find(u => u.email === email);
-    if (!user) return res.status(400).json({ message: "User nahi mila!" });
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Galat password!" });
-
-    // JWT Token generate karein
-    const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: '1h' });
-
-    res.status(200).json({ message: "Login successful", token });
-});
-
-// Server chalu karein
-app.listen(5000, () => console.log("Server running on port 5000"));
-</script>
 </html>

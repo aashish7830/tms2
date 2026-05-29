@@ -423,6 +423,466 @@ body {
     }
 }
     </style>
+      <style>
+        /* --- BUSINESS MODAL CUSTOM CSS --- */
+        
+        /* Trigger Button Styling */
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 15px;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        /* Full Screen Overlay */
+        .biz-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none; /* JS se flex hoga */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Modal Card Wrapper */
+        .biz-modal-wrapper {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 700px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Modal Header */
+        .biz-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid #eef2f5;
+        }
+        .biz-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .biz-modal-title i {
+            color: #007bff;
+        }
+        .biz-modal-close-trigger {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #64748b;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .biz-modal-close-trigger:hover {
+            color: #ef4444;
+        }
+
+        /* Modal Body Form Scrollable */
+        .biz-modal-body-form {
+            padding: 24px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        /* Form Grid Layout */
+        .biz-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        /* Full Width row for headings and specific inputs */
+        .biz-full-width {
+            grid-column: span 2;
+        }
+
+        /* Section Dividers */
+        .biz-section-divider {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+        .biz-section-divider h3 {
+            margin: 0;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+        }
+
+        /* Input Blocks */
+        .biz-input-block {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .biz-input-block label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+        }
+        .biz-input-block input, 
+        .biz-input-block select {
+            height: 40px;
+            padding: 0 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #334155;
+            outline: none;
+            background-color: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .biz-input-block input:focus, 
+        .biz-input-block select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+        }
+
+        /* Modal Footer */
+        .biz-modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 16px 24px;
+            border-top: 1px solid #eef2f5;
+            background-color: #f8fafc;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        /* Footer Buttons */
+        .biz-btn {
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .biz-btn-cancel {
+            background-color: #fff;
+            border: 1px solid #cbd5e1;
+            color: #64748b;
+        }
+        .biz-btn-cancel:hover {
+            background-color: #f1f5f9;
+            color: #334155;
+        }
+        .biz-btn-submit {
+            background-color: #22c55e;
+            border: none;
+            color: white;
+        }
+        .biz-btn-submit:hover {
+            background-color: #16a34a;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 600px) {
+            .biz-form-grid {
+                grid-template-columns: 1fr;
+            }
+            .biz-full-width {
+                grid-column: span 1;
+            }
+        }
+    </style>
+    <style>
+        /* Table Layout Core Settings */
+.table-responsive-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.biz-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+.biz-data-table th {
+    background-color: #f8fafc;
+    color: #64748b;
+    font-weight: 600;
+    padding: 14px 16px;
+    border-bottom: 2px solid #e2e8f0;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+.biz-data-table td {
+    padding: 16px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #334155;
+    vertical-align: middle;
+}
+
+.biz-data-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Internal Row Layout Elements */
+.biz-name-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.biz-title {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.biz-subtitle {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.count-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f1f5f9;
+    color: #334155;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    font-size: 13px;
+}
+
+.location-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.location-text i {
+    color: #94a3b8;
+}
+
+/* Three Dots Button Styles */
+.biz-action-dots-btn {
+    background: none;
+    border: none;
+    color: #64748b;
+    font-size: 18px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.biz-action-dots-btn:hover {
+    background-color: #f1f5f9;
+    color: #1e293b;
+}
+
+/* Dropdown Container */
+.biz-dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 16px;
+    top: 80%;
+    background-color: #ffffff;
+    min-width: 160px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    z-index: 100;
+    text-align: left;
+    overflow: hidden;
+}
+
+.biz-dropdown-menu.show-menu {
+    display: block;
+}
+
+/* Dropdown Options */
+.biz-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    color: #334155;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.biz-dropdown-item i {
+    font-size: 14px;
+    width: 16px;
+    color: #64748b;
+}
+
+.biz-dropdown-item:hover {
+    background-color: #f8fafc;
+}
+
+.biz-dropdown-item.item-edit:hover { color: #2563eb; }
+.biz-dropdown-item.item-edit:hover i { color: #2563eb; }
+.biz-dropdown-item.item-assign:hover { color: #059669; }
+.biz-dropdown-item.item-assign:hover i { color: #059669; }
+
+.biz-dropdown-divider {
+    height: 1px;
+    background-color: #edf2f7;
+    margin: 4px 0;
+}
+
+.biz-dropdown-item.item-delete { color: #dc2626; }
+.biz-dropdown-item.item-delete i { color: #ef4444; }
+.biz-dropdown-item.item-delete:hover { background-color: #fef2f2; }
+        </style>
+
+        <!-- add branch css -->
+         <style>
+            /* Modal Container (Pehle se hidden rahega) */
+.biz-modal-overlay {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.6); /* Dark semi-transparent background */
+    backdrop-filter: blur(4px); /* Modern blur effect */
+    z-index: 9999; /* Sabse upar dikhne ke liye */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal Box (Form ka white box) */
+.biz-modal-content {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px; /* Mobile par automatic adjust hoga */
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    position: relative;
+    animation: slideDown 0.3s ease-out; /* Smooth entrance */
+}
+
+/* Close (X) Button */
+.biz-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #64748b;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.biz-modal-close:hover {
+    color: #1e293b;
+}
+
+/* Input Fields Formatting (For clean layout) */
+.biz-input-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.biz-input-block label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.biz-input-block input, 
+.biz-input-block select {
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+}
+
+.biz-input-block input:focus, 
+.biz-input-block select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Action Buttons Styles */
+.open-modal-btn, .biz-submit-btn {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.open-modal-btn:hover, .biz-submit-btn:hover {
+    background-color: #1d4ed8;
+}
+
+.biz-submit-btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Animation Effect */
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+         </style>
 </head>
 <body>
        <header class="main-header">
@@ -518,12 +978,12 @@ body {
         <header class="dashboard-header">
             <div class="header-title">
                 <h1>Business Directory Tracker</h1>
-                <p>Monitor, search, and manage all your corporate ventures and business units.</p>
+                <!-- <p>Monitor, search, and manage all your corporate ventures and business units.</p> -->
             </div>
             <div class="header-actions">
-                <button class="btn btn-primary">
-                    <i class="fa-solid fa-plus"></i> Register New Business
-                </button>
+                <button class="btn btn-primary" id="openBusinessModalBtn">
+                          <i class="fa-solid fa-plus"></i> Register New Business
+                   </button>
                 <button class="btn btn-secondary">
                     <i class="fa-solid fa-download"></i> Download Report
                 </button>
@@ -533,7 +993,7 @@ body {
         <section class="filter-panel-card">
             <div class="filter-grid">
                 <div class="filter-group">
-                    <label><i class="fa-regular fa-calendar icon-green"></i> Founded After</label>
+                    <label><i class="fa-regular fa-calendar icon-green"></i> foundation date</label>
                     <input type="date">
                 </div>
                 <div class="filter-group">
@@ -594,73 +1054,233 @@ body {
             </div>
         </section>
 
+
+
+
         <main class="business-display-layout">
             
-            <div class="businesses-grid-section">
-                <div class="section-title-bar">
-                    <h2>Registered Businesses</h2>
-                    <span class="count-badge">3 Active Units</span>
-                </div>
+           <div class="businesses-grid-section">
+    <div class="section-title-bar">
+        <h2>Registered Businesses</h2>
+        <span class="count-badge">3 Active Units</span>
+    </div>
 
-                <div class="cards-wrapper">
-                    <div class="business-card">
-                        <div class="card-top">
-                            <div class="biz-info">
-                                <span class="biz-type">Tech & SaaS</span>
-                                <h3>TwoDots Films & Tech</h3>
-                            </div>
-                            <span class="badge badge-urgent">Urgent Focus</span>
+    <div class="table-responsive-wrapper">
+        <table class="biz-data-table">
+            <thead>
+                <tr>
+                    <th>Business Name</th>
+                    <th>Total Branch</th>
+                    <th>Total Staff</th>
+                    <th>Corporate Location</th>
+                    <th style="text-align: right;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="biz-name-cell">
+                            <span class="biz-title">TwoDots Films & Tech</span>
+                            <span class="biz-subtitle">Tech & SaaS / Media</span>
                         </div>
-                        <p class="biz-desc">Full-stack digital operations, media optimization pipelines, and Django-powered backend services.</p>
-                        <div class="card-meta">
-                            <span class="meta-item"><i class="fa-solid fa-location-dot"></i> Noida, Sec 62</span>
-                            <span class="meta-item"><i class="fa-solid fa-user-tie"></i> Rahul K.</span>
+                    </td>
+                    <td><span class="count-indicator">04</span></td>
+                    <td><span class="count-indicator">32</span></td>
+                    <td>
+                        <div class="location-text">
+                            <i class="fa-solid fa-location-dot"></i> Noida, Sec 62
                         </div>
-                        <div class="card-footer">
-                            <span class="status-pill status-inprogress">In Progress</span>
-                            <button class="btn-view-details">Manage <i class="fa-solid fa-arrow-right"></i></button>
+                    </td>
+                    <td style="text-align: right; position: relative;">
+                        <button class="biz-action-dots-btn" onclick="toggleBizDropdown(event, this)">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                        <div class="biz-dropdown-menu">
+                              
+                            <a href="#" class="biz-dropdown-item item-edit" onclick="openBranchModal(event)">
+                                          <i class="fa-solid fa-user-plus"></i> Add Branch
+                                                   </a>
+                           <a href="#" class="biz-dropdown-item item-assign" onclick="openDeptModal(event)">
+                                                    <i class="fa-solid fa-building"></i> Add Department
+                                                     </a>
+                            <div class="biz-dropdown-divider"></div>
+                            <a href="#" class="biz-dropdown-item item-delete">
+                                <i class="fa-solid fa-trash-can"></i> Delete
+                            </a>
                         </div>
-                    </div>
+                    </td>
+                </tr>
 
-                    <div class="business-card">
-                        <div class="card-top">
-                            <div class="biz-info">
-                                <span class="biz-type">Logistics & Supply</span>
-                                <h3>Apex Logistics Group</h3>
-                            </div>
-                            <span class="badge badge-medium">Medium</span>
+                 <tr>
+                    <td>
+                        <div class="biz-name-cell">
+                            <span class="biz-title">TwoDots Films & Tech</span>
+                            <span class="biz-subtitle">Tech & SaaS / Media</span>
                         </div>
-                        <p class="biz-desc">North region transport fleet management, heavy machinery handling, and real-time transit tracking metrics.</p>
-                        <div class="card-meta">
-                            <span class="meta-item"><i class="fa-solid fa-location-dot"></i> New Delhi</span>
-                            <span class="meta-item"><i class="fa-solid fa-user-tie"></i> Priya S.</span>
+                    </td>
+                    <td><span class="count-indicator">04</span></td>
+                    <td><span class="count-indicator">32</span></td>
+                    <td>
+                        <div class="location-text">
+                            <i class="fa-solid fa-location-dot"></i> Noida, Sec 62
                         </div>
-                        <div class="card-footer">
-                            <span class="status-pill status-todo">To Do</span>
-                            <button class="btn-view-details">Manage <i class="fa-solid fa-arrow-right"></i></button>
+                    </td>
+                    <td style="text-align: right; position: relative;">
+                        <button class="biz-action-dots-btn" onclick="toggleBizDropdown(event, this)">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                        <div class="biz-dropdown-menu">
+                              
+                            <a href="#" class="biz-dropdown-item item-edit" onclick="openBranchModal(event)">
+                                          <i class="fa-solid fa-user-plus"></i> Add Branch
+                                                   </a>
+                           <a href="#" class="biz-dropdown-item item-assign" onclick="openDeptModal(event)">
+                                                    <i class="fa-solid fa-building"></i> Add Department
+                                                     </a>
+                            <div class="biz-dropdown-divider"></div>
+                            <a href="#" class="biz-dropdown-item item-delete">
+                                <i class="fa-solid fa-trash-can"></i> Delete
+                            </a>
                         </div>
-                    </div>
+                    </td>
+                </tr>
 
-                    <div class="business-card">
-                        <div class="card-top">
-                            <div class="biz-info">
-                                <span class="biz-type">Hospitality</span>
-                                <h3>JNRS Hotels & Resorts</h3>
-                            </div>
-                            <span class="badge badge-high">High</span>
+                <tr>
+                    <td>
+                        <div class="biz-name-cell">
+                            <span class="biz-title">TwoDots Films & Tech</span>
+                            <span class="biz-subtitle">Tech & SaaS / Media</span>
                         </div>
-                        <p class="biz-desc">Premium luxury accommodation management, direct reservation API structures, and guest relations portals.</p>
-                        <div class="card-meta">
-                            <span class="meta-item"><i class="fa-solid fa-location-dot"></i> Mumbai</span>
-                            <span class="meta-item"><i class="fa-solid fa-user-tie"></i> Team Dev</span>
+                    </td>
+                    <td><span class="count-indicator">04</span></td>
+                    <td><span class="count-indicator">32</span></td>
+                    <td>
+                        <div class="location-text">
+                            <i class="fa-solid fa-location-dot"></i> Noida, Sec 62
                         </div>
-                        <div class="card-footer">
-                            <span class="status-pill status-review">Review</span>
-                            <button class="btn-view-details">Manage <i class="fa-solid fa-arrow-right"></i></button>
+                    </td>
+                    <td style="text-align: right; position: relative;">
+                        <button class="biz-action-dots-btn" onclick="toggleBizDropdown(event, this)">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                        <div class="biz-dropdown-menu">
+                              
+                            <a href="#" class="biz-dropdown-item item-edit" onclick="openBranchModal(event)">
+                                          <i class="fa-solid fa-user-plus"></i> Add Branch
+                                                   </a>
+                           <a href="#" class="biz-dropdown-item item-assign" onclick="openDeptModal(event)">
+                                                    <i class="fa-solid fa-building"></i> Add Department
+                                                     </a>
+                            <div class="biz-dropdown-divider"></div>
+                            <a href="#" class="biz-dropdown-item item-delete">
+                                <i class="fa-solid fa-trash-can"></i> Delete
+                            </a>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>
+                        <div class="biz-name-cell">
+                            <span class="biz-title">TwoDots Films & Tech</span>
+                            <span class="biz-subtitle">Tech & SaaS / Media</span>
+                        </div>
+                    </td>
+                    <td><span class="count-indicator">04</span></td>
+                    <td><span class="count-indicator">32</span></td>
+                    <td>
+                        <div class="location-text">
+                            <i class="fa-solid fa-location-dot"></i> Noida, Sec 62
+                        </div>
+                    </td>
+                    <td style="text-align: right; position: relative;">
+                        <button class="biz-action-dots-btn" onclick="toggleBizDropdown(event, this)">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                        <div class="biz-dropdown-menu">
+                              
+                            <a href="#" class="biz-dropdown-item item-edit" onclick="openBranchModal(event)">
+                                          <i class="fa-solid fa-user-plus"></i> Add Branch
+                                                   </a>
+                           <a href="#" class="biz-dropdown-item item-assign" onclick="openDeptModal(event)">
+                                                    <i class="fa-solid fa-building"></i> Add Department
+                                                     </a>
+                            <div class="biz-dropdown-divider"></div>
+                            <a href="#" class="biz-dropdown-item item-delete">
+                                <i class="fa-solid fa-trash-can"></i> Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>
+                        <div class="biz-name-cell">
+                            <span class="biz-title">TwoDots Films & Tech</span>
+                            <span class="biz-subtitle">Tech & SaaS / Media</span>
+                        </div>
+                    </td>
+                    <td><span class="count-indicator">04</span></td>
+                    <td><span class="count-indicator">32</span></td>
+                    <td>
+                        <div class="location-text">
+                            <i class="fa-solid fa-location-dot"></i> Noida, Sec 62
+                        </div>
+                    </td>
+                    <td style="text-align: right; position: relative;">
+                        <button class="biz-action-dots-btn" onclick="toggleBizDropdown(event, this)">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                        <div class="biz-dropdown-menu">
+                              
+                            <a href="#" class="biz-dropdown-item item-edit" onclick="openBranchModal(event)">
+                                          <i class="fa-solid fa-user-plus"></i> Add Branch
+                                                   </a>
+                           <a href="#" class="biz-dropdown-item item-assign" onclick="openDeptModal(event)">
+                                                    <i class="fa-solid fa-building"></i> Add Department
+                                                     </a>
+                            <div class="biz-dropdown-divider"></div>
+                            <a href="#" class="biz-dropdown-item item-delete">
+                                <i class="fa-solid fa-trash-can"></i> Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>
+                        <div class="biz-name-cell">
+                            <span class="biz-title">TwoDots Films & Tech</span>
+                            <span class="biz-subtitle">Tech & SaaS / Media</span>
+                        </div>
+                    </td>
+                    <td><span class="count-indicator">04</span></td>
+                    <td><span class="count-indicator">32</span></td>
+                    <td>
+                        <div class="location-text">
+                            <i class="fa-solid fa-location-dot"></i> Noida, Sec 62
+                        </div>
+                    </td>
+                    <td style="text-align: right; position: relative;">
+                        <button class="biz-action-dots-btn" onclick="toggleBizDropdown(event, this)">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                        <div class="biz-dropdown-menu">
+                              
+                            <a href="#" class="biz-dropdown-item item-edit" onclick="openBranchModal(event)">
+                                          <i class="fa-solid fa-user-plus"></i> Add Branch
+                                                   </a>
+                           <a href="#" class="biz-dropdown-item item-assign" onclick="openDeptModal(event)">
+                                                    <i class="fa-solid fa-building"></i> Add Department
+                                                     </a>
+                            <div class="biz-dropdown-divider"></div>
+                            <a href="#" class="biz-dropdown-item item-delete">
+                                <i class="fa-solid fa-trash-can"></i> Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
             <div class="stats-side-card">
                 <div class="card-header-simple">
@@ -691,6 +1311,7 @@ body {
 
         </main>
     </div>
+    <!-- + button -->
    <div class="fab-wrapper">
         <button class="fab-btn" id="dashboardFab" title="Action Menu">
             <i class="fa-solid fa-plus"></i>
@@ -719,6 +1340,302 @@ body {
                 
         </ul>
     </div>
+
+    <!-- form -->
+     <div class="biz-modal-overlay" id="addBusinessModal">
+        <div class="biz-modal-wrapper">
+            
+            <div class="biz-modal-header">
+                <div class="biz-modal-title">
+                    <i class="fa-solid fa-briefcase"></i> Register New Business Entity
+                </div>
+                <button class="biz-modal-close-trigger" id="closeBusinessModalCross">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="biz-modal-body-form">
+                <form id="businessRegistrationForm" onsubmit="event.preventDefault(); alert('Form Submitted Successfully!');">
+                    <div class="biz-form-grid">
+                        
+                        <div class="biz-full-width biz-section-divider">
+                            <h3>Business Details</h3>
+                        </div>
+
+                        <div class="biz-input-block">
+                            <label>Name of Business</label>
+                            <input type="text" placeholder="Enter business name" required>
+                        </div>
+                        
+                        <div class="biz-input-block">
+                            <label>Corporate Office</label>
+                            <input type="text" placeholder="Enter corporate office address" required>
+                        </div>
+                        
+                        <div class="biz-input-block biz-full-width">
+                            <label>Work Details</label>
+                            <input type="text" placeholder="Enter what this business does / work description" required>
+                        </div>
+
+                        <!-- <div class="biz-full-width biz-section-divider">
+                            <h3>Add Branch Details</h3>
+                        </div>
+
+                        <div class="biz-input-block">
+                            <label>Branch Name</label>
+                            <input type="text" placeholder="E.g., Mumbai Head Office" required>
+                        </div>
+
+                        <div class="biz-input-block">
+                            <label>Location</label>
+                            <input type="text" placeholder="Enter branch city/location" required>
+                        </div>
+
+                        <div class="biz-input-block">
+                            <label>Under Which Business</label>
+                            <select required>
+                                <option value="" disabled selected>Select parent business</option>
+                                <option value="twodots">TwoDots Films</option>
+                                <option value="jnrs">JNRS Hospitality</option>
+                                <option value="current">This New Business</option>
+                            </select>
+                        </div>
+
+                        <div class="biz-input-block">
+                            <label>Foundation Date</label>
+                            <input type="date" required>
+                        </div> -->
+
+                        <!-- <div class="biz-full-width biz-section-divider">
+                            <h3>Add Department</h3>
+                        </div>
+
+                        <div class="biz-input-block">
+                            <label>Name of Department</label>
+                            <input type="text" placeholder="E.g., Creative, HR, Accounts" required>
+                        </div>
+
+                        <div class="biz-input-block">
+                            <label>Under Which Business</label>
+                            <select required>
+                                <option value="" disabled selected>Select business</option>
+                                <option value="twodots">TwoDots Films</option>
+                                <option value="jnrs">JNRS Hospitality</option>
+                                <option value="current">This New Business</option>
+                            </select>
+                        </div> -->
+                         
+                    </div>
+                </form>
+            </div>
+
+            <div class="biz-modal-footer">
+                <button type="button" class="biz-btn biz-btn-cancel" id="closeBusinessModalBtn">Cancel</button>
+                <button type="submit" form="businessRegistrationForm" class="biz-btn biz-btn-submit">
+                    <i class="fa-regular fa-circle-check"></i> Save & Register Business
+                </button>
+            </div>
+
+        </div>
+    </div>
+    <!-- add branch form -->
+    
+
+<div id="bizBranchModal" class="biz-modal-overlay">
+    <div class="biz-modal-content">
+        <span class="biz-modal-close" onclick="closeBranchModal()">&times;</span>
+        
+        <div class="biz-full-width biz-section-divider">
+            <h3>Add Branch Details</h3>
+        </div>
+
+        <form id="addBranchForm">
+            <div class="biz-input-block">
+                <label>Branch Name</label>
+                <input type="text" placeholder="E.g., Mumbai Head Office" required>
+            </div>
+
+            <div class="biz-input-block">
+                <label>Location</label>
+                <input type="text" placeholder="Enter branch city/location" required>
+            </div>
+
+            <div class="biz-input-block">
+                <label>Under Which Business</label>
+                <select required>
+                    <option value="" disabled selected>Select parent business</option>
+                    <option value="twodots">TwoDots Films</option>
+                    <option value="jnrs">JNRS Hospitality</option>
+                    <option value="current">This New Business</option>
+                </select>
+            </div>
+
+            <div class="biz-input-block">
+                <label>Foundation Date</label>
+                <input type="date" required>
+            </div>
+            
+            <button type="submit" class="biz-submit-btn">Save Branch</button>
+        </form>
+    </div>
+</div>
+
+<!-- add department -->
+ <div id="bizDeptModal" class="biz-modal-overlay">
+    <div class="biz-modal-content">
+        <span class="biz-modal-close" onclick="closeDeptModal()">&times;</span>
+        
+        <div class="biz-full-width biz-section-divider">
+            <h3>Add Department</h3>
+        </div>
+
+        <form id="addDeptForm">
+            <div class="biz-input-block">
+                <label>Name of Department</label>
+                <input type="text" placeholder="E.g., Creative, HR, Accounts" required>
+            </div>
+
+            <div class="biz-input-block">
+                <label>Under Which Business</label>
+                <select required>
+                    <option value="" disabled selected>Select business</option>
+                    <option value="twodots">TwoDots Films</option>
+                    <option value="jnrs">JNRS Hospitality</option>
+                    <option value="current">This New Business</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="biz-submit-btn">Save Department</button>
+        </form>
+    </div>
+</div>
 </body>
   <script src="script.js"></script>
+  <!-- form -->
+  <script>
+        const businessModal = document.getElementById('addBusinessModal');
+        const openBusinessBtn = document.getElementById('openBusinessModalBtn');
+        const closeBusinessCross = document.getElementById('closeBusinessModalCross');
+        const closeBusinessBtn = document.getElementById('closeBusinessModalBtn');
+
+        // Modal open karne ke liye
+        openBusinessBtn.addEventListener('click', () => {
+            businessModal.style.display = 'flex';
+        });
+
+        // Modal close karne ke liye (Cross button)
+        closeBusinessCross.addEventListener('click', () => {
+            businessModal.style.display = 'none';
+        });
+
+        // Modal close karne ke liye (Cancel button)
+        closeBusinessBtn.addEventListener('click', () => {
+            businessModal.style.display = 'none';
+        });
+
+        // Agar user modal ke bahar background par click kare to close ho jaye
+        window.addEventListener('click', (e) => {
+            if (e.target === businessModal) {
+                businessModal.style.display = 'none';
+            }
+        });
+    </script>
+
+
+<script>
+    function toggleBizDropdown(event, button) {
+    event.stopPropagation(); // Window click logic ko bypass karne ke liye
+    closeAllBizDropdowns();
+    const currentDropdown = button.nextElementSibling;
+    currentDropdown.classList.toggle('show-menu');
+}
+
+// Window handler taaki screen par kahi bhi click ho to menu band ho jaye
+window.addEventListener('click', function() {
+    closeAllBizDropdowns();
+});
+
+function closeAllBizDropdowns() {
+    const allMenus = document.querySelectorAll('.biz-dropdown-menu');
+    allMenus.forEach(menu => menu.classList.remove('show-menu'));
+}
+</script>
+
+
+
+
+<!-- add branch form -->
+ <script>
+    // Modal open karne ke liye function
+function openBranchModal() {
+    const modal = document.getElementById('bizBranchModal');
+    modal.style.display = 'flex'; // 'flex' use kiya taaki content center me alignment sahi rahe
+}
+
+// Modal close karne ke liye function
+function closeBranchModal() {
+    const modal = document.getElementById('bizBranchModal');
+    modal.style.display = 'none';
+}
+
+// Agar user form ke bahar dark area me click kare, toh bhi modal band ho jaye
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('bizBranchModal');
+    if (event.target === modal) {
+        closeBranchModal();
+    }
+});
+
+// Aapke trigger button par click event lagane ke liye (Agar HTML me onclick nahi likhna toh)
+// document.querySelector('.open-modal-btn').addEventListener('click', openBranchModal);
+    </script>
+
+    <!-- add department -->
+     <script>
+        // ==========================================
+// Department Modal Logic
+// ==========================================
+
+// Department Modal Open karne ke liye
+function openDeptModal(event) {
+    if (event) {
+        event.preventDefault(); // Page jump rokne ke liye
+        event.stopPropagation(); // Window click handler ko bypass karne ke liye
+    }
+    
+    // Dropdown menu ko band karne ke liye
+    if (typeof closeAllBizDropdowns === "function") {
+        closeAllBizDropdowns();
+    }
+
+    const deptModal = document.getElementById('bizDeptModal');
+    deptModal.style.display = 'flex'; 
+}
+
+// Department Modal Close karne ke liye
+function closeDeptModal() {
+    const deptModal = document.getElementById('bizDeptModal');
+    deptModal.style.display = 'none';
+}
+
+// Global Window Click Handler (Purane wale handler ko isse replace kar dein)
+window.addEventListener('click', function(event) {
+    // 1. Purani dropdowns band karne ke liye logic
+    if (typeof closeAllBizDropdowns === "function") {
+        closeAllBizDropdowns();
+    }
+    
+    // 2. Branch Modal ke bahar click ho to band karein
+    const branchModal = document.getElementById('bizBranchModal');
+    if (branchModal && event.target === branchModal) {
+        closeBranchModal();
+    }
+    
+    // 3. Department Modal ke bahar click ho to band karein
+    const deptModal = document.getElementById('bizDeptModal');
+    if (deptModal && event.target === deptModal) {
+        closeDeptModal();
+    }
+});
+        </script>
 </html>

@@ -3,322 +3,636 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complete Auth - OTP & Google</title>
+    <title>Business Management Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 360px; text-align: center; }
-        h2 { margin-bottom: 20px; color: #1a1a1a; font-weight: 600; }
-        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
-        button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 10px; transition: 0.2s; }
-        button:hover { background: #0056b3; }
-        .google-btn { background: #ea4335; margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .google-btn:hover { background: #d33426; }
-        .divider { margin: 20px 0; border-bottom: 1px solid #e0e0e0; position: relative; }
-        .divider span { position: absolute; top: -10px; background: #fff; padding: 0 10px; left: 50%; transform: translateX(-50%); color: #777; font-size: 12px; }
-        .toggle-link { margin-top: 15px; display: block; color: #007bff; cursor: pointer; font-size: 14px; text-decoration: none; }
-        .toggle-link:hover { text-decoration: underline; }
-        .hidden { display: none; }
+        /* --- GLOBAL & PAGE STYLING --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-shadow: border-box;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1f5f9;
+            color: #334155;
+            padding: 20px;
+        }
+
+        /* Top Header Action Bar */
+        .dashboard-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1300px;
+            margin: 0 auto 24px auto;
+            background: #ffffff;
+            padding: 16px 24px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        .dashboard-header-bar h1 {
+            font-size: 22px;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        /* Trigger Button Styling */
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* --- TABLE & LAYOUT CSS --- */
+        .business-display-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 24px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .businesses-grid-section {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            padding: 24px;
+        }
+
+        .section-title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .section-title-bar h2 {
+            font-size: 18px;
+            color: #0f172a;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .count-badge {
+            background-color: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .table-responsive-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .biz-data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .biz-data-table th {
+            background-color: #f8fafc;
+            color: #64748b;
+            font-weight: 600;
+            padding: 14px 16px;
+            border-bottom: 2px solid #e2e8f0;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .biz-data-table td {
+            padding: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #334155;
+            vertical-align: middle;
+        }
+
+        .biz-data-table tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .biz-name-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .biz-title {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .biz-subtitle {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .count-indicator {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f1f5f9;
+            color: #334155;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            font-size: 13px;
+        }
+
+        .location-text {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .location-text i {
+            color: #94a3b8;
+        }
+
+        /* --- THREE DOTS DROPDOWN CSS --- */
+        .biz-action-dots-btn {
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 18px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .biz-action-dots-btn:hover {
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .biz-dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 16px;
+            top: 80%;
+            background-color: #ffffff;
+            min-width: 160px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            z-index: 100;
+            text-align: left;
+            overflow: hidden;
+            animation: dropdownFadeIn 0.15s ease-out;
+        }
+
+        .biz-dropdown-menu.show-menu {
+            display: block;
+        }
+
+        @keyframes dropdownFadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .biz-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            color: #334155;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .biz-dropdown-item i {
+            font-size: 14px;
+            width: 16px;
+            color: #64748b;
+        }
+        .biz-dropdown-item:hover {
+            background-color: #f8fafc;
+        }
+        .biz-dropdown-item.item-edit:hover { color: #2563eb; }
+        .biz-dropdown-item.item-edit:hover i { color: #2563eb; }
+        .biz-dropdown-item.item-assign:hover { color: #059669; }
+        .biz-dropdown-item.item-assign:hover i { color: #059669; }
+        
+        .biz-dropdown-divider {
+            height: 1px;
+            background-color: #edf2f7;
+            margin: 4px 0;
+        }
+        .biz-dropdown-item.item-delete { color: #dc2626; }
+        .biz-dropdown-item.item-delete i { color: #ef4444; }
+        .biz-dropdown-item.item-delete:hover { background-color: #fef2f2; }
+
+        /* --- SIDE CARD STATS --- */
+        .stats-side-card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            height: fit-content;
+        }
+        .card-header-simple h2 {
+            font-size: 16px;
+            color: #0f172a;
+            margin: 0 0 16px 0;
+            font-weight: 600;
+        }
+        .mini-stat-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 14px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .stat-num {
+            display: block;
+            font-size: 24px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #64748b;
+        }
+        .efficiency-container {
+            margin-top: 16px;
+        }
+        .efficiency-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+        .pct-text { font-weight: 600; color: #2563eb; }
+        .bar-bg { background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; }
+        .bar-fill { background: #2563eb; height: 100%; }
+
+        /* --- MODAL POP-UP SYSTEM CSS --- */
+        .biz-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .biz-modal-wrapper {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 680px;
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+            animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes modalSlideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .biz-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 24px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .biz-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .biz-modal-title i { color: #2563eb; }
+        .biz-modal-close-trigger {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #94a3b8;
+            cursor: pointer;
+        }
+        .biz-modal-close-trigger:hover { color: #ef4444; }
+        
+        .biz-modal-body-form {
+            padding: 24px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .biz-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        .biz-full-width { grid-column: span 2; }
+        
+        .biz-section-divider {
+            margin-top: 10px;
+            margin-bottom: 4px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+        .biz-section-divider h3 {
+            margin: 0; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b;
+        }
+        
+        .biz-input-block { display: flex; flex-direction: column; gap: 6px; }
+        .biz-input-block label { font-size: 13px; font-weight: 600; color: #475569; }
+        .biz-input-block input, .biz-input-block select {
+            height: 40px; padding: 0 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; color: #334155; outline: none; background-color: #fff;
+        }
+        .biz-input-block input:focus, .biz-input-block select:focus {
+            border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+        
+        .biz-modal-footer {
+            display: flex; justify-content: flex-end; gap: 12px; padding: 16px 24px; border-top: 1px solid #f1f5f9; background-color: #f8fafc; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;
+        }
+        .biz-btn { padding: 10px 18px; font-size: 14px; font-weight: 500; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; border: none;}
+        .biz-btn-cancel { background-color: #fff; border: 1px solid #cbd5e1; color: #64748b; }
+        .biz-btn-cancel:hover { background-color: #f1f5f9; }
+        .biz-btn-submit { background-color: #10b981; color: white; }
+        .biz-btn-submit:hover { background-color: #059669; }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 992px) {
+            .business-display-layout { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 600px) {
+            .biz-form-grid { grid-template-columns: 1fr; }
+            .biz-full-width { grid-column: span 1; }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- LOGIN BOX -->
-    <div id="login-box">
-        <h2>Login</h2>
-        <input type="email" id="login-email" placeholder="Email Address" required>
-        <input type="password" id="login-password" placeholder="Password" required>
-        <button onclick="handleLogin()">Sign In</button>
+    <header class="dashboard-header-bar">
+        <h1>Management Console</h1>
+        <button class="btn-primary" id="openBusinessModalBtn">
+            <i class="fa-solid fa-plus"></i> Register New Business
+        </button>
+    </header>
+
+    <main class="business-display-layout">
         
-        <div class="divider"><span>OR</span></div>
-        <button class="google-btn" onclick="loginWithGoogle()">Sign in with Google</button>
-        
-        <span class="toggle-link" onclick="toggleForm('register')">Naya account banayein (Register)</span>
+        <div class="businesses-grid-section">
+            <div class="section-title-bar">
+                <h2>Registered Businesses</h2>
+                <span class="count-badge">3 Active Units</span>
+            </div>
+
+            <div class="table-responsive-wrapper">
+                <table class="biz-data-table">
+                    <thead>
+                        <tr>
+                            <th>Business Name</th>
+                            <th>Total Branch</th>
+                            <th>Total Staff</th>
+                            <th>Corporate Location</th>
+                            <th style="text-align: right;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="biz-name-cell">
+                                    <span class="biz-title">TwoDots Films & Tech</span>
+                                    <span class="biz-subtitle">Tech & SaaS / Media</span>
+                                </div>
+                            </td>
+                            <td><span class="count-indicator">04</span></td>
+                            <td><span class="count-indicator">32</span></td>
+                            <td><div class="location-text"><i class="fa-solid fa-location-dot"></i> Noida, Sec 62</div></td>
+                            <td style="text-align: right; position: relative;">
+                                <button class="biz-action-dots-btn" onclick="toggleBizDropdown(event, this)">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </button>
+                                <div class="biz-dropdown-menu">
+                                    <a href="#" class="biz-dropdown-item item-edit"><i class="fa-solid fa-pen-to-square"></i> Edit Business</a>
+                                    <a href="#" class="biz-dropdown-item item-assign"><i class="fa-solid fa-user-plus"></i> Assign Staff</a>
+                                    <div class="biz-dropdown-divider"></div>
+                                    <a href="#" class="biz-dropdown-item item-delete"><i class="fa-solid fa-trash-can"></i> Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="biz-name-cell">
+                                    <span class="biz-title">Apex Logistics Group</span>
+                                    <span class="biz-subtitle">Logistics & Supply</span>
+                                </div>
+                            </td>
+                            <td><span class="count-indicator">02</span></td>
+                            <td><span class="count-indicator">18</span></td>
+                            <td><div class="location-text"><i class="fa-solid fa-location-dot"></i> New Delhi</div></td>
+                            <td style="text-align: right; position: relative;">
+                                <button class="biz-action-dots-btn" onclick="toggleBizDropdown(event, this)">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </button>
+                                <div class="biz-dropdown-menu">
+                                    <a href="#" class="biz-dropdown-item item-edit"><i class="fa-solid fa-pen-to-square"></i> Edit Business</a>
+                                    <a href="#" class="biz-dropdown-item item-assign"><i class="fa-solid fa-user-plus"></i> Assign Staff</a>
+                                    <div class="biz-dropdown-divider"></div>
+                                    <a href="#" class="biz-dropdown-item item-delete"><i class="fa-solid fa-trash-can"></i> Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="biz-name-cell">
+                                    <span class="biz-title">JNRS Hotels & Resorts</span>
+                                    <span class="biz-subtitle">Hospitality</span>
+                                </div>
+                            </td>
+                            <td><span class="count-indicator">05</span></td>
+                            <td><span class="count-indicator">45</span></td>
+                            <td><div class="location-text"><i class="fa-solid fa-location-dot"></i> Mumbai</div></td>
+                            <td style="text-align: right; position: relative;">
+                                <button class="biz-action-dots-btn" onclick="toggleBizDropdown(event, this)">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </button>
+                                <div class="biz-dropdown-menu">
+                                    <a href="#" class="biz-dropdown-item item-edit"><i class="fa-solid fa-pen-to-square"></i> Edit Business</a>
+                                    <a href="#" class="biz-dropdown-item item-assign"><i class="fa-solid fa-user-plus"></i> Assign Staff</a>
+                                    <div class="biz-dropdown-divider"></div>
+                                    <a href="#" class="biz-dropdown-item item-delete"><i class="fa-solid fa-trash-can"></i> Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="stats-side-card">
+            <div class="card-header-simple">
+                <h2>Portfolio Efficiency</h2>
+            </div>
+            <div class="stats-visual-area">
+                <div class="mini-stat-box">
+                    <span class="stat-num">03</span>
+                    <span class="stat-label">Total Units</span>
+                </div>
+                <div class="mini-stat-box">
+                    <span class="stat-num">94%</span>
+                    <span class="stat-label">Uptime Rate</span>
+                </div>
+            </div>
+            <div class="efficiency-container">
+                <div class="efficiency-labels">
+                    <span>Overall Growth Index</span>
+                    <span class="pct-text">75%</span>
+                </div>
+                <div class="bar-bg">
+                    <div class="bar-fill" style="width: 75%;"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="biz-modal-overlay" id="addBusinessModal">
+        <div class="biz-modal-wrapper">
+            <div class="biz-modal-header">
+                <div class="biz-modal-title">
+                    <i class="fa-solid fa-briefcase"></i> Register New Business Entity
+                </div>
+                <button class="biz-modal-close-trigger" id="closeBusinessModalCross"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="biz-modal-body-form">
+                <form id="businessRegistrationForm" onsubmit="event.preventDefault(); alert('Form Submitted!');">
+                    <div class="biz-form-grid">
+                        
+                        <div class="biz-full-width biz-section-divider"><h3>Business Details</h3></div>
+                        <div class="biz-input-block">
+                            <label>Name of Business</label>
+                            <input type="text" placeholder="Enter business name" required>
+                        </div>
+                        <div class="biz-input-block">
+                            <label>Corporate Office</label>
+                            <input type="text" placeholder="Enter office address" required>
+                        </div>
+                        <div class="biz-input-block biz-full-width">
+                            <label>Work Details</label>
+                            <input type="text" placeholder="Enter work description" required>
+                        </div>
+
+                        <div class="biz-full-width biz-section-divider"><h3>Add Branch Details</h3></div>
+                        <div class="biz-input-block">
+                            <label>Branch Name</label>
+                            <input type="text" placeholder="E.g., Mumbai Head Office" required>
+                        </div>
+                        <div class="biz-input-block">
+                            <label>Location</label>
+                            <input type="text" placeholder="Enter branch location" required>
+                        </div>
+                        <div class="biz-input-block">
+                            <label>Under Which Business</label>
+                            <select required>
+                                <option value="" disabled selected>Select parent business</option>
+                                <option value="twodots">TwoDots Films</option>
+                                <option value="jnrs">JNRS Hospitality</option>
+                                <option value="current">This New Business</option>
+                            </select>
+                        </div>
+                        <div class="biz-input-block">
+                            <label>Foundation Date</label>
+                            <input type="date" required>
+                        </div>
+
+                        <div class="biz-full-width biz-section-divider"><h3>Add Department</h3></div>
+                        <div class="biz-input-block">
+                            <label>Name of Department</label>
+                            <input type="text" placeholder="E.g., Creative, HR" required>
+                        </div>
+                        <div class="biz-input-block">
+                            <label>Under Which Business</label>
+                            <select required>
+                                <option value="" disabled selected>Select business</option>
+                                <option value="twodots">TwoDots Films</option>
+                                <option value="jnrs">JNRS Hospitality</option>
+                                <option value="current">This New Business</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="biz-modal-footer">
+                <button type="button" class="biz-btn biz-btn-cancel" id="closeBusinessModalBtn">Cancel</button>
+                <button type="submit" form="businessRegistrationForm" class="biz-btn biz-btn-submit">
+                    <i class="fa-regular fa-circle-check"></i> Save & Register Business
+                </button>
+            </div>
+        </div>
     </div>
 
-    <!-- REGISTRATION BOX -->
-    <div id="register-box" class="hidden">
-        <h2>Register</h2>
-        <input type="text" id="reg-name" placeholder="Full Name" required>
-        <input type="email" id="reg-email" placeholder="Email Address" required>
-        <input type="password" id="reg-password" placeholder="Password" required>
-        <button onclick="handleRegister()">OTP Bhejein</button>
-        
-        <div class="divider"><span>OR</span></div>
-        <button class="google-btn" onclick="loginWithGoogle()">Sign up with Google</button>
-        
-        <span class="toggle-link" onclick="toggleForm('login')">Pehle se account hai? Login karein</span>
-    </div>
+    <script>
+        // Modal Selectors
+        const businessModal = document.getElementById('addBusinessModal');
+        const openBusinessBtn = document.getElementById('openBusinessModalBtn');
+        const closeBusinessCross = document.getElementById('closeBusinessModalCross');
+        const closeBusinessBtn = document.getElementById('closeBusinessModalBtn');
 
-    <!-- OTP VERIFICATION BOX -->
-    <div id="otp-box" class="hidden">
-        <h2>OTP Verification</h2>
-        <p style="font-size: 14px; color: #555;">Aapke email par 6-digits ka OTP bheja gaya hai.</p>
-        <input type="text" id="otp-input" placeholder="Enter 6-Digit OTP" maxlength="6" required>
-        <button onclick="verifyOTP()">Verify & Register</button>
-        <span class="toggle-link" onclick="toggleForm('register')">Wapas jayein</span>
-    </div>
-</div>
+        // Open Modal
+        openBusinessBtn.addEventListener('click', () => { businessModal.style.display = 'flex'; });
+        // Close Modal
+        closeBusinessCross.addEventListener('click', () => { businessModal.style.display = 'none'; });
+        closeBusinessBtn.addEventListener('click', () => { businessModal.style.display = 'none'; });
 
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+        // Three Dots Dropdown Toggle Function
+        function toggleBizDropdown(event, button) {
+            event.stopPropagation(); // Window click logic ko temporary rokne k liye
+            closeAllBizDropdowns();
+            const currentDropdown = button.nextElementSibling;
+            currentDropdown.classList.toggle('show-menu');
+        }
 
-<script>
-    // ⚠️ IMPORTANT: Apne Firebase Console se yeh details badlein
-    const firebaseConfig = {
-        apiKey: "YOUR_FIREBASE_API_KEY",
-        authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_STORAGE_BUCKET",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
-    };
-    
-    firebase.initializeApp(firebaseConfig);
-    const provider = new firebase.auth.GoogleAuthProvider();
-    const BACKEND_URL = "http://localhost:5000/api";
-    let temporaryEmail = "";
-
-    function toggleForm(form) {
-        document.getElementById('login-box').classList.add('hidden');
-        document.getElementById('register-box').classList.add('hidden');
-        document.getElementById('otp-box').classList.add('hidden');
-
-        if(form === 'login') document.getElementById('login-box').classList.remove('hidden');
-        if(form === 'register') document.getElementById('register-box').classList.remove('hidden');
-        if(form === 'otp') document.getElementById('otp-box').classList.remove('hidden');
-    }
-
-    // G0OGLE LOGIN/SIGNUP FUNCTION
-    function loginWithGoogle() {
-        firebase.auth().signInWithPopup(provider)
-        .then(async (result) => {
-            // Google se secure ID Token nikalein
-            const idToken = await result.user.getIdToken();
-
-            // Token ko backend par verification ke liye bhejein
-            const response = await fetch(`${BACKEND_URL}/google-login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token: idToken })
-            });
-
-            const data = await response.json();
-            if(response.ok) {
-                alert("Google Auth Successful! JWT Token: " + data.token);
-                console.log("User Data:", data.user);
-            } else {
-                alert("Backend verification failed: " + data.message);
+        // Window screen standard handler (dropdown & modal dynamic close)
+        window.addEventListener('click', function(e) {
+            closeAllBizDropdowns();
+            if (e.target === businessModal) {
+                businessModal.style.display = 'none';
             }
-        }).catch((error) => {
-            alert("Google Auth Failed: " + error.message);
-        });
-    }
-
-    // SELF REGISTRATION (STEP 1: SEND OTP)
-    async function handleRegister() {
-        const name = document.getElementById('reg-name').value;
-        const email = document.getElementById('reg-email').value;
-        const password = document.getElementById('reg-password').value;
-
-        if(!name || !email || !password) return alert("Kripya saari details bharein!");
-
-        temporaryEmail = email;
-
-        const response = await fetch(`${BACKEND_URL}/send-otp`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, password })
         });
 
-        const data = await response.json();
-        if(response.ok) {
-            alert(data.message);
-            toggleForm('otp');
-        } else {
-            alert(data.message);
+        function closeAllBizDropdowns() {
+            const allMenus = document.querySelectorAll('.biz-dropdown-menu');
+            allMenus.forEach(menu => menu.classList.remove('show-menu'));
         }
-    }
-
-    // SELF REGISTRATION (STEP 2: VERIFY OTP)
-    async function verifyOTP() {
-        const otp = document.getElementById('otp-input').value;
-
-        const response = await fetch(`${BACKEND_URL}/verify-otp`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: temporaryEmail, otp })
-        });
-
-        const data = await response.json();
-        if(response.ok) {
-            alert("Registration Successful! Ab aap login kar sakte hain.");
-            toggleForm('login');
-        } else {
-            alert(data.message);
-        }
-    }
-
-    // SELF LOGIN
-    async function handleLogin() {
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
-
-        const response = await fetch(`${BACKEND_URL}/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        });
-
-        const data = await response.json();
-        if(response.ok) {
-            alert("Login Successful! JWT Token: " + data.token);
-        } else {
-            alert(data.message);
-        }
-    }
-</script>
-<script>
-    const express = require('express');
-const cors = require('cors');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
-const { OAuth2Client } = require('google-auth-library');
-
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-// CONFIGURATIONS
-const JWT_SECRET = "aapka_super_secret_key_123";
-// ⚠️ Google Console -> Credentials me se Client ID yahan dalein
-const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"; 
-const client = new OAuth2Client(GOOGLE_CLIENT_ID);
-
-// Dummy Database
-let usersDB = [];
-let tempOTPStore = {}; 
-
-// Nodemailer Setup (Gmail)
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'YOUR_EMAIL@gmail.com', 
-        pass: 'YOUR_GMAIL_APP_PASSWORD' // Google Account -> Security -> App Passwords me banta hai
-    }
-});
-
-// 1. ROUTE: Send OTP (Self-Registration Step 1)
-app.post('/api/send-otp', async (req, res) => {
-    const { name, email, password } = req.body;
-
-    const userExists = usersDB.find(u => u.email === email);
-    if (userExists) return res.status(400).json({ message: "Email pehle se registered hai!" });
-
-    // 6-digit OTP
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Temporary store data
-    tempOTPStore[email] = { name, email, password: hashedPassword, otp };
-
-    const mailOptions = {
-        from: 'YOUR_EMAIL@gmail.com',
-        to: email,
-        subject: 'Aapka Verification OTP',
-        text: `Namaste ${name}, aapka account verification OTP hai: ${otp}`
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error(error);
-            return res.status(500).json({ message: "Email bhejne me dikkat aayi!" });
-        }
-        res.status(200).json({ message: "OTP aapke email par bhej diya gaya hai!" });
-    });
-});
-
-// 2. ROUTE: Verify OTP & Register (Self-Registration Step 2)
-app.post('/api/verify-otp', (req, res) => {
-    const { email, otp } = req.body;
-    const tempUser = tempOTPStore[email];
-
-    if (!tempUser) return res.status(400).json({ message: "Koyi data nahi mila. Fir se try karein." });
-
-    if (tempUser.otp === otp) {
-        // Main Database me save karein
-        usersDB.push({
-            name: tempUser.name,
-            email: tempUser.email,
-            password: tempUser.password,
-            authType: 'self'
-        });
-
-        delete tempOTPStore[email]; // Clear temp cache
-        return res.status(200).json({ message: "Registration successful!" });
-    } else {
-        return res.status(400).json({ message: "Galat OTP! Kripya fir se check karein." });
-    }
-});
-
-// 3. ROUTE: Self Login (Email & Password)
-app.post('/api/login', async (req, res) => {
-    const { email, password } = req.body;
-
-    const user = usersDB.find(u => u.email === email);
-    if (!user) return res.status(400).json({ message: "User nahi mila!" });
-    if (user.authType === 'google') return res.status(400).json({ message: "Kripya Google Login ka upyog karein!" });
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Galat password!" });
-
-    const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: '1h' });
-    res.status(200).json({ message: "Login successful", token });
-});
-
-// 4. ROUTE: Google Login & Auto-Registration (Dono ek sath)
-app.post('/api/google-login', async (req, res) => {
-    const { token } = req.body;
-
-    try {
-        // Google Token ko verify karein ki yeh genuine hai
-        const ticket = await client.verifyIdToken({
-            idToken: token,
-            audience: GOOGLE_CLIENT_ID,
-        });
-        
-        const payload = ticket.getPayload();
-        const { email, name, picture } = payload; 
-
-        // Check karein kya user database me hai?
-        let user = usersDB.find(u => u.email === email);
-
-        if (!user) {
-            // Agar pehle se account nahi hai, toh Google se details lekar AUTOMATIC REGISTER kar dein
-            user = { name, email, picture, authType: 'google' };
-            usersDB.push(user);
-            console.log("Naya User Google se automatically register hua:", email);
-        }
-
-        // Login session ke liye apna custom JWT token dein
-        const jwtToken = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: '2h' });
-
-        res.status(200).json({ 
-            message: "Google Authentication Successful", 
-            token: jwtToken,
-            user: { name: user.name, email: user.email }
-        });
-
-    } catch (error) {
-        console.error("Google Auth Error:", error);
-        res.status(400).json({ message: "Google token verification fail ho gayi!" });
-    }
-});
-
-// Server Start
-app.listen(5000, () => console.log("🔥 Server running securely on port 5000"));
-</script>
+    </script>
 </body>
 </html>
